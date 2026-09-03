@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ora — Dental care, skin, and online consultation in Amman</title>
+<meta name="description" content="Ora is a dental clinic and skin lounge in Amman. Book a specialist in minutes, or consult online from anywhere.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..500,0..100;1,9..144,300..500,0..100&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg">
+<meta property="og:image" content="/assets/img/logo-512.jpg">
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="index.html" aria-label="ORA"><svg class="o-tooth" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 7 C29 7 15 20 15 39 C15 52 21 60 25 72 C27.5 80 29 90 35 90 C41 90 41.5 81 43 74 C44.5 67 46.5 63 50 63 C53.5 63 55.5 67 57 74 C58.5 81 59 90 65 90 C71 90 72.5 80 75 72 C79 60 85 52 85 39 C85 20 71 7 50 7 Z" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round"/><circle cx="39" cy="36" r="3.4" fill="currentColor"/><circle cx="61" cy="36" r="3.4" fill="currentColor"/><path d="M36 47 Q50 58 64 47" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg><span class="wordmark">RA</span><span class="dot-b">.</span></a>
+  <ul>
+    <li><a href="#care" data-i18n="n_care">Care</a></li>
+    <li><a href="lounge.html" data-i18n="n_lounge">The Lounge</a></li>
+    <li><a href="consult.html" data-i18n="n_consult">Consult online</a></li>
+    <li><a href="#specialists" data-i18n="n_spec">Specialists</a></li>
+    <li><a href="#journal" data-i18n="n_journal">Journal</a></li>
+    <li><a href="pro.html" data-i18n="n_pro">For dentists</a></li>
+  </ul>
+  <div class="nav-actions"><button class="lang-toggle" id="langToggle" type="button" aria-label="عربي">عربي</button>
+    <a class="btn btn-ghost btn-sm" href="consult.html" data-i18n="n_consult">Consult online</a>
+    <a class="btn btn-primary btn-sm" href="book.html" data-i18n="n_book">Book</a>
+  </div>
+</nav>
+
+<header class="hero night">
+  <div class="light"></div>
+  <img class="hero-mono" src="assets/img/logo-512.jpg" alt="Dr. Awen Halasa monogram" loading="eager">
+  <div class="wrap hero-inner">
+    <h1 data-i18n-html="h1">Precision you can trust. Calm you can <em>feel.</em></h1>
+    <p class="lede" data-i18n="lede">A dental clinic and skin lounge in Madaba, built around one idea: the best care is quiet, exact, and entirely about you.</p>
+    <div class="hero-actions">
+      <a class="btn btn-ivory btn-lg" href="book.html" data-i18n="cta_book">Book an appointment</a>
+      <a class="btn btn-ghost btn-lg" href="#care" data-i18n="cta_explore">Explore our care</a>
+    </div>
+    <div class="hero-foot">
+      <a class="pain-note" href="book.html?fast=1"><i class="dot"></i><span data-i18n-html="pain">In pain right now? <b>Take the fast track</b></span></a>
+      <span data-i18n="loc">Madaba, Jordan · Sat–Thu 9:00–20:00 · 079 222 2427</span>
+    </div>
+  </div>
+</header>
+
+<section id="care" class="day">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 data-i18n="care_h">Four ways we look after you.</h2>
+      <p class="lede" data-i18n="care_l">Dentistry, cosmetic work, skin, and a doctor on your screen when you can't come in. One team, one standard.</p>
+    </div>
+    <div class="services">
+      <a class="service" href="book.html?cat=dental">
+        <h3 data-i18n="s1h">Dental care</h3>
+        <p>Check-ups, cleaning, fillings, root canals, gum treatment, children's dentistry, and emergencies. The careful, everyday work that keeps everything else possible.</p>
+        <span class="go">Book dental</span>
+      </a>
+      <a class="service" href="book.html?cat=dental&concern=cosmetic">
+        <h3 data-i18n="s2h">Cosmetic dentistry</h3>
+        <p>Whitening, veneers, aligners, and implants, planned with digital scans so you see the result before we begin.</p>
+        <span class="go">Plan a smile</span>
+      </a>
+      <a class="service" href="lounge.html">
+        <h3 data-i18n="s3h">The Skin Lounge</h3>
+        <p>Facials, skin rejuvenation, laser, and anti-aging treatments in a quieter room with its own pace.</p>
+        <span class="go">Visit the Lounge</span>
+      </a>
+      <a class="service" href="consult.html">
+        <h3 data-i18n="s4h">Online consultation</h3>
+        <p>Fifteen or thirty minutes with a specialist by video. For second opinions, follow-ups, and knowing whether you need to come in at all.</p>
+        <span class="go">See times</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="day" style="padding-top:0">
+  <div class="wrap grid g-12">
+    <div class="span-4">
+      <p class="cap">The experience</p>
+      <h2>Why it feels different.</h2>
+    </div>
+    <div class="span-7 start-6">
+      <div class="statement">
+        <span class="k">Before</span>
+        <div><h3>You tell us what's wrong in your own words.</h3><p>Not a form of tick boxes. A short, plain conversation, so the right specialist reads your note before you sit in the chair.</p></div>
+      </div>
+      <div class="statement">
+        <span class="k">During</span>
+        <div><h3>Nothing happens that we haven't explained.</h3><p>Every step is shown on the screen beside you, in language you understand, with the option to pause at any moment.</p></div>
+      </div>
+      <div class="statement">
+        <span class="k">After</span>
+        <div><h3>Your care continues on your phone.</h3><p>Aftercare notes, reminders, and a follow-up consultation by video, so a question never has to wait for the next visit.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="night" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 data-i18n="gal_h">The clinic, as it is.</h2>
+      <p class="lede">Not renders. Two operatories, a quiet waiting room, and afternoon light off the marble — photographed this week.</p>
+    </div>
+    <div class="gallery">
+      <div class="ph"><video src="assets/video/walkthrough.mp4" poster="assets/img/walkthrough-poster.jpg" autoplay muted loop playsinline></video><span class="cap-tag">Walking in</span></div>
+      <div class="ph"><img src="assets/img/room-1.jpg" alt="Clinic 1 — operatory with panoramic window" loading="lazy"><span class="cap-tag">Clinic 1</span></div>
+      <div class="ph"><img src="assets/img/reception.jpg" alt="Reception and waiting area" loading="lazy"><span class="cap-tag">Reception</span></div>
+      <div class="ph"><img src="assets/img/clinic-2.jpg" alt="Clinic 2 — second operatory" loading="lazy"><span class="cap-tag">Clinic 2</span></div>
+      <div class="ph"><img src="assets/img/room-2.jpg" alt="Operatory with equipment wall" loading="lazy"><span class="cap-tag">The equipment wall</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="specialists" class="night" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 data-i18n="spec_h">The specialists.</h2>
+      <p class="lede">Small by design. Each doctor carries a caseload that leaves room to know their patients.</p>
+    </div>
+    <div class="people">
+      <div class="person">
+        <div class="portrait"><img src="assets/img/logo-512.jpg" alt="Dr. Awen Halasa — clinic monogram"></div>
+        <h4>Dr. Awen Halasa</h4>
+        <div class="meta">Cosmetic dentistry &amp; facial aesthetics<br>DDS (University of Jordan) · MFD RCSI, MFD RCSE<br>PGDip Aesthetic Dentistry (Leeds) · Arabic, English</div>
+      </div>
+      <div class="person">
+        <div class="portrait"><span>OM</span></div>
+        <h4>Dr. Omar Masri</h4>
+        <div class="meta">Endodontics &amp; emergency care<br>11 years · Arabic, English</div>
+      </div>
+      <div class="person">
+        <div class="portrait"><span>RS</span></div>
+        <h4>Dr. Rania Saleh</h4>
+        <div class="meta">Orthodontics &amp; children's dentistry<br>9 years · Arabic, English, German</div>
+      </div>
+      <div class="person">
+        <div class="portrait"><span>NK</span></div>
+        <h4>Dr. Nour Khalil</h4>
+        <div class="meta">Dermatology, The Skin Lounge<br>12 years · Arabic, English</div>
+      </div>
+    </div>
+    <p class="small" style="margin-top:28px">Dr. Halasa leads the clinic; his portrait is being shot to the brand brief. The other three profiles are placeholders for the associates joining at launch.</p>
+  </div>
+</section>
+
+<section class="day">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 data-i18n="book_h">Booking, without the phone call.</h2>
+      <p class="lede">Describe the issue. We match the specialist. Pick a time that's actually free. Done in about a minute.</p>
+    </div>
+    <div class="rail">
+      <div>
+        <div><span class="step">Your concern</span><h4>What's bothering you?</h4></div>
+        <div class="chips"><span class="chip on">Tooth pain</span><span class="chip">Whitening</span><span class="chip">Skin check</span><span class="chip">Braces</span></div>
+      </div>
+      <div>
+        <div><span class="step">Specialist</span><h4>Matched for you</h4></div>
+        <div class="chips"><span class="chip on">Dr. Masri</span><span class="chip">Dr. Haddad</span><span class="chip">Dr. Saleh</span></div>
+      </div>
+      <div>
+        <div><span class="step">Time</span><h4>Live availability</h4></div>
+        <div class="chips"><span class="chip on">Today 17:30</span><span class="chip">Tomorrow 10:00</span><span class="chip">Sun 12:15</span></div>
+      </div>
+      <div>
+        <div><span class="step">Confirmed</span><h4>You're booked</h4></div>
+        <div class="chips"><span class="chip on">Reminder set</span><span class="chip">Paid</span><span class="chip">Add to calendar</span></div>
+      </div>
+    </div>
+    <div style="margin-top:32px"><a class="btn btn-primary btn-lg" href="book.html">Start booking</a></div>
+  </div>
+</section>
+
+<section class="sage-room">
+  <div class="wrap grid g-12">
+    <div class="span-6">
+      <div class="lounge-visual"><img src="assets/img/waiting.jpg" alt="The quieter corner of the clinic" loading="lazy"><span class="caption">The quieter corner</span></div>
+    </div>
+    <div class="span-5 start-8" style="display:grid;align-content:center;gap:18px">
+      <p class="cap">The Skin Lounge</p>
+      <h2>Slower light. Same standard.</h2>
+      <p class="lede">A separate room inside Ora for skin: consultations, facials, laser, and rejuvenation, led by a dermatologist rather than a menu.</p>
+      <div><a class="btn btn-primary" href="lounge.html">Visit the Lounge</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="day">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><div class="n">98%</div><p>of patients say they'd recommend Ora to someone they care about.</p></div>
+      <div class="stat"><div class="n">12<span class="serif" style="font-size:.5em"> min</span></div><p>median time from first tap to a confirmed appointment.</p></div>
+      <div class="stat"><div class="n">4</div><p>specialists, each certified by the Jordan Medical Council and trained abroad.</p></div>
+    </div>
+    <div class="quotes" style="margin-top:72px">
+      <div class="quote"><p>"I came in with a cracked molar at seven in the evening. By eight I was home, and the pain was gone."</p><span class="who">Faris, patient since 2024</span></div>
+      <div class="quote"><p>"They showed me my veneers on screen before touching a single tooth. I've never felt that in control at a dentist."</p><span class="who">Dana, cosmetic patient</span></div>
+      <div class="quote"><p>"The online consultation saved me a flight. Dr. Khalil looked, listened, and sent the plan the same day."</p><span class="who">Yara, consulting from Dubai</span></div>
+    </div>
+    <p class="small" style="margin-top:24px">Sample statements for layout. Replace with verified patient reviews before launch.</p>
+  </div>
+</section>
+
+<section id="journal" class="day" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>The journal.</h2>
+      <p class="lede">Short, honest notes from our doctors. What to expect, what to ask, what to ignore.</p>
+    </div>
+    <div class="journal">
+      <a class="article" href="#"><span class="tag">Treatment guide</span><h3>What a root canal actually feels like in 2026</h3><p>Less than you fear. Here's the hour, minute by minute.</p></a>
+      <a class="article" href="#"><span class="tag">Cosmetic</span><h3>Veneers or whitening: how we decide</h3><p>Three questions we ask before recommending either.</p></a>
+      <a class="article" href="#"><span class="tag">Skin</span><h3>Retinol, the Amman way</h3><p>Dry heat and strong sun change the rules. Dr. Khalil's routine.</p></a>
+    </div>
+  </div>
+</section>
+
+<section class="sage-room">
+  <div class="wrap grid g-12">
+    <div class="span-6" style="display:grid;align-content:center;gap:18px">
+      <p class="cap">For dentists</p>
+      <h2 data-i18n="pro_h">No clinic? Practice at Ora.</h2>
+      <p class="lede">Two fully equipped operatories, bookable by the hour or on an all-inclusive share. Clinic 2 daily from 9:00; Clinic 1 — the flagship room — every evening from 7 and all day Friday. Bring your patients; we handle the room.</p>
+      <div><a class="btn btn-primary" href="pro.html" data-i18n="pro_cta">See rooms and pricing</a></div>
+    </div>
+    <div class="span-5 start-8">
+      <div class="lounge-visual" style="min-height:360px"><img src="assets/img/room-2.jpg" alt="Operatory ready for a partner session" loading="lazy"><span class="caption">Clinic 1, 7pm</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="night">
+  <div class="wrap" style="display:grid;gap:28px">
+    <h2 style="max-width:16ch" data-i18n="end_h">Whenever you're ready, we're already prepared.</h2>
+    <div class="hero-actions">
+      <a class="btn btn-ivory btn-lg" href="book.html">Book an appointment</a>
+      <a class="btn btn-ghost btn-lg" href="consult.html">Consult online</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <div><div class="brand-lockup"><img class="logo-badge" src="assets/img/logo-512.jpg" alt="Ora monogram"><a class="brand" href="index.html" aria-label="ORA"><svg class="o-tooth" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 7 C29 7 15 20 15 39 C15 52 21 60 25 72 C27.5 80 29 90 35 90 C41 90 41.5 81 43 74 C44.5 67 46.5 63 50 63 C53.5 63 55.5 67 57 74 C58.5 81 59 90 65 90 C71 90 72.5 80 75 72 C79 60 85 52 85 39 C85 20 71 7 50 7 Z" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round"/><circle cx="39" cy="36" r="3.4" fill="currentColor"/><circle cx="61" cy="36" r="3.4" fill="currentColor"/><path d="M36 47 Q50 58 64 47" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg><span class="wordmark">RA</span><span class="dot-b">.</span></a></div><p class="small" style="margin-top:14px;max-width:32ch">The clinic of Dr. Awen Halasa. Dental care and skin lounge, Madaba, Jordan. Care, considered.</p></div>
+    <div><h4>Care</h4><ul><li><a href="book.html?cat=dental">Dental</a></li><li><a href="book.html?cat=dental&concern=cosmetic">Cosmetic</a></li><li><a href="lounge.html">Skin Lounge</a></li><li><a href="consult.html">Online consultation</a></li></ul></div>
+    <div><h4>Clinic</h4><ul><li><a href="#specialists">Specialists</a></li><li><a href="#journal">Journal</a></li>
+    <li><a href="pro.html">For dentists</a></li><li><a href="#">About</a></li><li><a href="#">FAQ</a></li><li><a href="admin.html">Clinic portal</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li>079 222 2427</li><li>hello@ora.clinic</li><li>Sat–Thu 9:00–20:00 · Fri: partner sessions</li></ul></div>
+  </div>
+  <div class="foot-bottom"><span>© 2026 Ora Clinic. Preview build.</span><span><a href="admin.html">Clinic portal</a> · Privacy · Terms · Patient rights</span></div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/i18n.js"></script>
+</body>
+</html>

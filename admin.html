@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ora — clinic portal</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..500,0..100;1,9..144,300..500,0..100&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg">
+</head>
+<body class="day">
+
+<!-- gate -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <a class="brand" href="index.html" aria-label="ORA"><svg class="o-tooth" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 7 C29 7 15 20 15 39 C15 52 21 60 25 72 C27.5 80 29 90 35 90 C41 90 41.5 81 43 74 C44.5 67 46.5 63 50 63 C53.5 63 55.5 67 57 74 C58.5 81 59 90 65 90 C71 90 72.5 80 75 72 C79 60 85 52 85 39 C85 20 71 7 50 7 Z" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round"/><circle cx="39" cy="36" r="3.4" fill="currentColor"/><circle cx="61" cy="36" r="3.4" fill="currentColor"/><path d="M36 47 Q50 58 64 47" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg><span class="wordmark">RA</span><span class="dot-b">.</span></a>
+    <h2 style="font-size:30px;margin:20px 0 6px">Clinic portal</h2>
+    <p class="small">Reservations, the calendar, and partner requests. Staff only.</p>
+    <div class="field" style="margin-top:22px"><label for="gEmail">Email</label>
+      <input type="email" id="gEmail" placeholder="you@ora.clinic" autocomplete="email"></div>
+    <button class="btn btn-primary btn-lg" id="gGo" style="width:100%;justify-content:center">Enter the portal</button>
+    <p class="small" id="gErr" style="color:var(--error);margin-top:12px" hidden>That email isn't on the staff list. Ask Dr. Halasa to add you.</p>
+    <p class="small" style="margin-top:18px">Prototype access check. Real sign-in with passwords and roles ships with the Supabase build.</p>
+  </div>
+</div>
+
+<!-- portal -->
+<div id="portal" hidden>
+  <nav class="nav">
+    <a class="brand" href="index.html" aria-label="ORA"><svg class="o-tooth" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 7 C29 7 15 20 15 39 C15 52 21 60 25 72 C27.5 80 29 90 35 90 C41 90 41.5 81 43 74 C44.5 67 46.5 63 50 63 C53.5 63 55.5 67 57 74 C58.5 81 59 90 65 90 C71 90 72.5 80 75 72 C79 60 85 52 85 39 C85 20 71 7 50 7 Z" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linejoin="round"/><circle cx="39" cy="36" r="3.4" fill="currentColor"/><circle cx="61" cy="36" r="3.4" fill="currentColor"/><path d="M36 47 Q50 58 64 47" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg><span class="wordmark">RA</span><span class="dot-b">.</span></a>
+    <ul>
+      <li><button class="tab-link on" data-tab="today" type="button">Today</button></li>
+      <li><button class="tab-link" data-tab="cal" type="button">Calendar</button></li>
+      <li><button class="tab-link" data-tab="req" type="button">Partner requests <span class="badge" id="reqBadge" hidden></span></button></li>
+    </ul>
+    <div class="nav-actions"><span class="small" id="whoami"></span><button class="btn btn-ghost btn-sm" id="signOut" type="button">Sign out</button></div>
+  </nav>
+
+  <main class="wrap" style="padding-block:44px 90px">
+
+    <section class="a-tab" id="t-today">
+      <div class="a-head"><h2 id="todayTitle" style="font-size:38px">Today</h2>
+        <span class="small" id="todayCount"></span></div>
+      <div class="a-cols">
+        <div><h4 class="a-room">Clinic 1 — Dr. Halasa</h4><div class="a-list" id="todayC1"></div></div>
+        <div><h4 class="a-room">Clinic 2</h4><div class="a-list" id="todayC2"></div></div>
+      </div>
+    </section>
+
+    <section class="a-tab" id="t-cal" hidden>
+      <div class="a-head">
+        <h2 style="font-size:38px">Calendar</h2>
+        <div class="a-controls">
+          <select id="calRoom"><option value="c1">Clinic 1</option><option value="c2">Clinic 2</option></select>
+          <button class="btn btn-ghost btn-sm" id="calPrev" type="button">‹ Prev day</button>
+          <b id="calDate" style="min-width:22ch;text-align:center"></b>
+          <button class="btn btn-ghost btn-sm" id="calNext" type="button">Next day ›</button>
+        </div>
+      </div>
+      <div class="a-day" id="calGrid"></div>
+      <p class="small" style="margin-top:14px">Click an empty hour to block it or add a booking. Patient bookings arrive from the site; partner sessions appear here when you approve them.</p>
+    </section>
+
+    <section class="a-tab" id="t-req" hidden>
+      <div class="a-head"><h2 style="font-size:38px">Partner requests</h2>
+        <span class="small">Approve to place the session on the calendar; the dentist gets a WhatsApp confirmation.</span></div>
+      <div class="a-list" id="reqList"></div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="js/main.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
