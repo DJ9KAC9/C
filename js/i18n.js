@@ -1,47 +1,343 @@
-// ORA i18n — English/Arabic with RTL. Static UI is bilingual; the interactive
-// booking flows remain English in this phase (noted in BLUEPRINT.md).
-const AR = {
-  n_care:'الرعاية', n_lounge:'ركن البشرة', n_consult:'استشارة أونلاين', n_spec:'الأطباء',
-  n_journal:'المدوّنة', n_pro:'للأطباء', n_book:'احجز', leave:'مغادرة الحجز',
-  h1:'دقة تثق بها. وهدوء <em>تشعر به.</em>',
-  lede:'عيادة أسنان وركن للبشرة في مادبا، بُنيت على فكرة واحدة: أفضل رعاية هي الهادئة، الدقيقة، والتي تدور حولك أنت.',
-  cta_book:'احجز موعدك', cta_explore:'تعرّف على خدماتنا',
-  pain:'تشعر بألم الآن؟ <b>خذ المسار السريع</b>',
-  loc:'مادبا، الأردن · السبت–الخميس ٩:٠٠–٢٠:٠٠ · ٠٧٩٢٢٢٢٤٢٧',
-  care_h:'أربع طرق نعتني بك فيها.',
-  care_l:'طب الأسنان، التجميل، البشرة، وطبيب على شاشتك حين يتعذر حضورك. فريق واحد، ومعيار واحد.',
-  s1h:'طب الأسنان', s2h:'تجميل الأسنان', s3h:'ركن البشرة', s4h:'استشارة أونلاين',
-  gal_h:'العيادة كما هي.', spec_h:'الأطباء.', book_h:'الحجز، من دون مكالمة.',
-  pro_h:'لا تملك عيادة؟ اعمل في أورا.', pro_cta:'الغرف والأسعار',
-  end_h:'متى ما كنت جاهزًا، نحن مستعدون.',
+// ORA i18n v2 — full-page English/Arabic.
+// Translates every text node against the dictionary below, watches the DOM so
+// content rendered by book.js/pro.js translates as it appears, and restores the
+// exact original English on switch-back.
+const TR = {
+// ---- brand / nav / shared ----
+"Care":"الرعاية","The Lounge":"ركن البشرة","Consult online":"استشارة أونلاين","Specialists":"الأطباء",
+"Journal":"المدوّنة","For dentists":"للأطباء","For patients":"للمرضى","Book":"احجز","Clinic":"العيادة",
+"Contact":"تواصل معنا","About":"عن أورا","FAQ":"الأسئلة الشائعة","Clinic portal":"بوابة العيادة",
+"Pricing":"الأسعار","Book a room":"احجز غرفة","House rules":"قواعد العمل","Back":"رجوع","Continue":"متابعة",
+"Leave booking":"مغادرة الحجز","Back to Ora":"العودة إلى أورا","Dental":"الأسنان","Cosmetic":"التجميل",
+"Skin Lounge":"ركن البشرة","Online consultation":"استشارة أونلاين",
+"© 2026 Ora Clinic. Preview build.":"© ٢٠٢٦ عيادة أورا. نسخة تجريبية.",
+"© 2026 Ora Clinic. Preview build — availability simulated.":"© ٢٠٢٦ عيادة أورا. نسخة تجريبية — المواعيد محاكاة.",
+"· Privacy · Terms · Patient rights":"· الخصوصية · الشروط · حقوق المريض",
+"· Privacy · Terms · Partner agreement":"· الخصوصية · الشروط · اتفاقية الشراكة",
+"Sat–Thu 9:00–20:00 · Fri: partner sessions":"السبت–الخميس ٩:٠٠–٢٠:٠٠ · الجمعة: جلسات الشركاء",
+"Sat–Thu 9:00–20:00 · partner hours to midnight":"السبت–الخميس ٩:٠٠–٢٠:٠٠ · ساعات الشركاء حتى منتصف الليل",
+"Dental clinic and skin lounge. Madaba, Jordan. Care, considered.":"عيادة أسنان وركن للبشرة. مادبا، الأردن. رعاية بعناية.",
+"The clinic of Dr. Awen Halasa. Dental care and skin lounge, Madaba, Jordan. Care, considered.":"عيادة الدكتور أوين هلسا. رعاية أسنان وركن للبشرة، مادبا، الأردن. رعاية بعناية.",
+// ---- homepage hero ----
+"Precision you can trust. Calm you can":"دقة تثق بها. وهدوء","feel.":"تشعر به.",
+"A dental clinic and skin lounge in Madaba, built around one idea: the best care is quiet, exact, and entirely about you.":"عيادة أسنان وركن للبشرة في مادبا، بُنيت على فكرة واحدة: أفضل رعاية هي الهادئة والدقيقة والتي تدور حولك أنت.",
+"Book an appointment":"احجز موعدك","Explore our care":"تعرّف على خدماتنا",
+"In pain right now?":"تشعر بألم الآن؟","Take the fast track":"خذ المسار السريع",
+"Madaba, Jordan · Sat–Thu 9:00–20:00 · 079 222 2427":"مادبا، الأردن · السبت–الخميس ٩:٠٠–٢٠:٠٠ · ٠٧٩٢٢٢٢٤٢٧",
+// ---- homepage services ----
+"Four ways we look after you.":"أربع طرق نعتني بك فيها.",
+"Dentistry, cosmetic work, skin, and a doctor on your screen when you can't come in. One team, one standard.":"طب الأسنان، والتجميل، والبشرة، وطبيب على شاشتك حين يتعذر حضورك. فريق واحد، ومعيار واحد.",
+"Dental care":"طب الأسنان",
+"Check-ups, cleaning, fillings, root canals, gum treatment, children's dentistry, and emergencies. The careful, everyday work that keeps everything else possible.":"فحوصات، تنظيف، حشوات، علاج عصب، علاج لثة، أسنان أطفال، وحالات طارئة. العمل اليومي الدقيق الذي يجعل كل ما عداه ممكنًا.",
+"Book dental":"احجز للأسنان","Cosmetic dentistry":"تجميل الأسنان",
+"Whitening, veneers, aligners, and implants, planned with digital scans so you see the result before we begin.":"تبييض، فينير، تقويم شفاف، وزراعة — تُخطَّط بالمسح الرقمي لترى النتيجة قبل أن نبدأ.",
+"Plan a smile":"خطّط لابتسامتك","The Skin Lounge":"ركن البشرة",
+"Facials, skin rejuvenation, laser, and anti-aging treatments in a quieter room with its own pace.":"جلسات للوجه، نضارة البشرة، ليزر، وعلاجات مقاومة التقدّم في السن — في غرفة أهدأ لها إيقاعها الخاص.",
+"Visit the Lounge":"زر ركن البشرة",
+"Fifteen or thirty minutes with a specialist by video. For second opinions, follow-ups, and knowing whether you need to come in at all.":"خمس عشرة أو ثلاثون دقيقة مع اختصاصي عبر الفيديو. لرأي ثانٍ، أو متابعة، أو لمعرفة ما إذا كنت تحتاج الحضور أصلًا.",
+"See times":"المواعيد المتاحة",
+// ---- homepage experience ----
+"The experience":"التجربة","Why it feels different.":"لماذا تشعر بالفرق.",
+"Before":"قبل","During":"أثناء","After":"بعد",
+"You tell us what's wrong in your own words.":"تخبرنا بما يزعجك بكلماتك أنت.",
+"Not a form of tick boxes. A short, plain conversation, so the right specialist reads your note before you sit in the chair.":"ليست استمارة خانات. حديث قصير وبسيط، ليقرأ الاختصاصي المناسب ملاحظتك قبل أن تجلس على الكرسي.",
+"Nothing happens that we haven't explained.":"لا شيء يحدث قبل أن نشرحه لك.",
+"Every step is shown on the screen beside you, in language you understand, with the option to pause at any moment.":"كل خطوة تُعرض على الشاشة بجانبك، بلغة تفهمها، مع إمكانية التوقف في أي لحظة.",
+"Your care continues on your phone.":"رعايتك تستمر على هاتفك.",
+"Aftercare notes, reminders, and a follow-up consultation by video, so a question never has to wait for the next visit.":"تعليمات ما بعد العلاج، وتذكيرات، واستشارة متابعة بالفيديو — حتى لا ينتظر سؤالك الزيارة القادمة.",
+// ---- gallery ----
+"The clinic, as it is.":"العيادة كما هي.",
+"Not renders. Two operatories, a quiet waiting room, and afternoon light off the marble — photographed this week.":"ليست تصاميم افتراضية. غرفتا علاج، وصالة انتظار هادئة، وضوء العصر على الرخام — صُوِّرت هذا الأسبوع.",
+"Walking in":"عند الدخول","Reception":"الاستقبال","The equipment wall":"جدار الأجهزة",
+// ---- specialists ----
+"The specialists.":"الأطباء.",
+"Small by design. Each doctor carries a caseload that leaves room to know their patients.":"فريق صغير عن قصد. كل طبيب يحمل عددًا من الحالات يترك له مساحة ليعرف مرضاه.",
+"Dr. Awen Halasa":"د. أوين هلسا","Dr. Omar Masri":"د. عمر المصري","Dr. Rania Saleh":"د. رانيا صالح",
+"Dr. Nour Khalil":"د. نور خليل","Dr. Lina Haddad":"د. لينا حداد",
+"Cosmetic dentistry & facial aesthetics":"تجميل الأسنان وجماليات الوجه",
+"DDS (University of Jordan) · MFD RCSI, MFD RCSE":"بكالوريوس طب أسنان (الجامعة الأردنية) · زمالة MFD من الكليتين الملكيتين في أيرلندا وإدنبرة",
+"PGDip Aesthetic Dentistry (Leeds) · Arabic, English":"دبلوم عالٍ في طب الأسنان التجميلي (ليدز) · العربية، الإنجليزية",
+"Endodontics & emergency care":"علاج العصب والحالات الطارئة",
+"Orthodontics & children's dentistry":"التقويم وطب أسنان الأطفال",
+"Dermatology, The Skin Lounge":"الأمراض الجلدية — ركن البشرة",
+"11 years · Arabic, English":"خبرة ١١ عامًا · العربية، الإنجليزية",
+"12 years · Arabic, English":"خبرة ١٢ عامًا · العربية، الإنجليزية",
+"9 years · Arabic, English, German":"خبرة ٩ أعوام · العربية، الإنجليزية، الألمانية",
+"Portraits are being shot to the brand brief. The three associate profiles are placeholders for launch.":"الصور الشخصية قيد التصوير وفق هوية العلامة. ملفات الأطباء الثلاثة الآخرين مؤقتة حتى الانطلاق.",
+// ---- booking rail ----
+"Booking, without the phone call.":"الحجز، من دون مكالمة.",
+"Describe the issue. We match the specialist. Pick a time that's actually free. Done in about a minute.":"صف ما تشعر به، نختار لك الاختصاصي المناسب، وتختار وقتًا متاحًا فعلًا. كل ذلك في نحو دقيقة.",
+"Your concern":"ما يزعجك","What's bothering you?":"ما الذي يزعجك؟","Tooth pain":"ألم أسنان","Whitening":"تبييض",
+"Skin check":"فحص بشرة","Braces":"تقويم","Specialist":"الاختصاصي","Matched for you":"اخترناه لك",
+"Time":"الوقت","Live availability":"مواعيد محدثة","Today 17:30":"اليوم ١٧:٣٠","Tomorrow 10:00":"غدًا ١٠:٠٠",
+"Sun 12:15":"الأحد ١٢:١٥","Confirmed":"تم التأكيد","You're booked":"تم حجزك","Reminder set":"تم ضبط التذكير",
+"Paid":"مدفوع","Add to calendar":"أضف إلى التقويم","Start booking":"ابدأ الحجز",
+// ---- lounge teaser / stats / quotes / journal ----
+"Slower light. Same standard.":"إيقاع أهدأ. المعيار نفسه.",
+"A separate room inside Ora for skin: consultations, facials, laser, and rejuvenation, led by a dermatologist rather than a menu.":"غرفة مستقلة داخل أورا للبشرة: استشارات، جلسات وجه، ليزر، ونضارة — يقودها طبيب جلدية لا قائمة عروض.",
+"The quieter corner":"الركن الأهدأ",
+"of patients say they'd recommend Ora to someone they care about.":"من المرضى يقولون إنهم سيرشّحون أورا لشخص يهتمون به.",
+"median time from first tap to a confirmed appointment.":"متوسط الوقت من أول نقرة حتى تأكيد الموعد.",
+"min":"دقيقة",
+"specialists, each certified by the Jordan Medical Council and trained abroad.":"اختصاصيون، كلٌّ منهم معتمد من المجلس الطبي الأردني ومدرَّب في الخارج.",
+"\"I came in with a cracked molar at seven in the evening. By eight I was home, and the pain was gone.\"":"«دخلت بضرس مكسور في السابعة مساء. وفي الثامنة كنت في بيتي، والألم قد زال.»",
+"Faris, patient since 2024":"فارس، مريض منذ ٢٠٢٤",
+"\"They showed me my veneers on screen before touching a single tooth. I've never felt that in control at a dentist.\"":"«عرضوا لي الفينير على الشاشة قبل أن يلمسوا سنًّا واحدة. لم أشعر يومًا بهذا القدر من الاطمئنان عند طبيب أسنان.»",
+"Dana, cosmetic patient":"دانا، مريضة تجميل",
+"\"The online consultation saved me a flight. Dr. Khalil looked, listened, and sent the plan the same day.\"":"«الاستشارة الأونلاين وفّرت عليّ رحلة طيران. د. خليل نظرت، وأصغت، وأرسلت الخطة في اليوم نفسه.»",
+"Yara, consulting from Dubai":"يارا، تستشير من دبي",
+"Sample statements for layout. Replace with verified patient reviews before launch.":"عبارات توضيحية للتصميم. تُستبدل بتقييمات مرضى موثّقة قبل الانطلاق.",
+"The journal.":"المدوّنة.",
+"Short, honest notes from our doctors. What to expect, what to ask, what to ignore.":"ملاحظات قصيرة وصادقة من أطبائنا: ما تتوقعه، وما تسأل عنه، وما تتجاهله.",
+"Treatment guide":"دليل العلاج","What a root canal actually feels like in 2026":"كيف يبدو علاج العصب فعلًا في ٢٠٢٦",
+"Less than you fear. Here's the hour, minute by minute.":"أخف مما تخشى. إليك الساعة كاملة، دقيقة بدقيقة.",
+"Veneers or whitening: how we decide":"فينير أم تبييض: كيف نقرر",
+"Three questions we ask before recommending either.":"ثلاثة أسئلة نطرحها قبل أن ننصح بأيٍّ منهما.",
+"Skin":"البشرة","Retinol, the Amman way":"الريتينول على طريقة عمّان",
+"Dry heat and strong sun change the rules. Dr. Khalil's routine.":"الحر الجاف والشمس القوية يغيّران القواعد. روتين د. خليل.",
+// ---- for dentists teaser + closing ----
+"No clinic? Practice at Ora.":"لا تملك عيادة؟ اعمل في أورا.",
+"Two fully equipped operatories, bookable by the hour or on an all-inclusive share. Clinic 2 daily from 9:00; Clinic 1 — the flagship room — every evening from 7 and all day Friday. Bring your patients; we handle the room.":"غرفتا علاج مجهزتان بالكامل، تُحجزان بالساعة أو بنظام الحصة الشامل. الغرفة ٢ يوميًا من ٩:٠٠؛ والغرفة ١ — الغرفة الرئيسية — كل مساء من السابعة وطوال يوم الجمعة. أحضر مرضاك، ونحن نتكفل بالغرفة.",
+"See rooms and pricing":"الغرف والأسعار","Clinic 1, 7pm":"الغرفة ١، السابعة مساءً",
+"Whenever you're ready, we're already prepared.":"متى ما كنت جاهزًا، نحن مستعدون.",
+// ---- lounge page ----
+"The Skin Lounge at Ora":"ركن البشرة في أورا","Skin is a long":"البشرة حديث","conversation.":"طويل.",
+"A dermatologist-led room inside the clinic. Fewer treatments, chosen carefully. No menu of forty options, no upsell at the door.":"غرفة يقودها طبيب جلدية داخل العيادة. علاجات أقل، مختارة بعناية. لا قائمة من أربعين خيارًا، ولا بيع إضافي عند الباب.",
+"Book a skin consultation":"احجز استشارة بشرة","Ask online first":"اسأل أونلاين أولًا",
+"What we do here.":"ماذا نقدّم هنا.",
+"Everything starts with a consultation. Dr. Khalil looks at your skin, your climate, and your habits before anything is recommended.":"كل شيء يبدأ باستشارة. تنظر د. خليل إلى بشرتك ومناخك وعاداتك قبل أن توصي بأي شيء.",
+"Skin consultation":"استشارة بشرة",
+"Thirty minutes. Assessment, a plan you can follow at home, and honesty about what will and won't help.":"ثلاثون دقيقة: تقييم، وخطة تتبعها في البيت، وصراحة حول ما ينفع وما لا ينفع.",
+"35 JOD":"٣٥ دينارًا","Facials":"جلسات الوجه",
+"Medical-grade, adjusted to your skin on the day rather than a fixed protocol.":"بمستوى طبي، تُضبط حسب بشرتك في يومها لا وفق بروتوكول ثابت.",
+"From 90 JOD":"من ٩٠ دينارًا","Acne":"حب الشباب",
+"Active breakouts, scarring, and the routine that prevents both. Teenagers welcome.":"البثور النشطة، والندوب، والروتين الذي يقي منهما. والمراهقون على الرحب.",
+"Laser":"الليزر",
+"Pigmentation, texture, redness, and hair removal, with settings chosen for Mediterranean and Middle Eastern skin.":"التصبغات، والملمس، والاحمرار، وإزالة الشعر — بإعدادات مختارة لبشرة المتوسط والشرق الأوسط.",
+"From 95 JOD":"من ٩٥ دينارًا","Anti-aging and rejuvenation":"مقاومة التقدّم في السن والنضارة",
+"Subtle work that makes you look rested, not different. We will say no when no is the right answer.":"عمل هادئ يجعلك تبدو مرتاحًا لا مختلفًا. وسنقول «لا» حين تكون «لا» هي الجواب الصحيح.",
+"From 60 JOD":"من ٦٠ دينارًا","Why it sits inside a dental clinic.":"لماذا يقع داخل عيادة أسنان.",
+"Because a smile is a face. Patients finishing veneers or aligners kept asking us where to go next, and we didn't have a good answer. So we built one, with the same doctors' standards and the same booking, records, and follow-up.":"لأن الابتسامة وجه كامل. كان مرضى الفينير والتقويم يسألوننا دائمًا: إلى أين بعد ذلك؟ ولم يكن لدينا جواب جيد، فبنيناه — بمعايير الأطباء نفسها ونظام الحجز والسجلات والمتابعة نفسه.",
+"The Lounge keeps its own pace: longer appointments, a quieter room, afternoon light.":"لركن البشرة إيقاعه الخاص: مواعيد أطول، وغرفة أهدأ، وضوء العصر.",
+"Start with a conversation.":"ابدأ بحديث.",
+// ---- consult page ----
+"A specialist, on your":"اختصاصي، على","screen.":"شاشتك.",
+"Fifteen or thirty minutes by video with an Ora doctor. Second opinions, follow-ups, or simply finding out whether you need to come in.":"خمس عشرة أو ثلاثون دقيقة بالفيديو مع طبيب من أورا. رأي ثانٍ، أو متابعة، أو ببساطة معرفة ما إذا كان عليك الحضور.",
+"15 minutes · 20 JOD":"١٥ دقيقة · ٢٠ دينارًا","30 minutes · 35 JOD":"٣٠ دقيقة · ٣٥ دينارًا",
+"Times shown in your time zone. Secure link sent 15 minutes before.":"المواعيد بتوقيتك المحلي. يصلك رابط آمن قبل الموعد بربع ساعة.",
+"Arabic, English, French, German":"العربية، الإنجليزية، الفرنسية، الألمانية",
+"How it works":"كيف تعمل","Simple on purpose.":"بسيطة عن قصد.",
+"Choose":"اختر","Pick the doctor and the length.":"اختر الطبيب والمدة.",
+"Fifteen minutes for a question. Thirty for a plan. You see the fee before anything is confirmed.":"خمس عشرة دقيقة لسؤال، وثلاثون لخطة. وترى الرسوم قبل تأكيد أي شيء.",
+"Describe":"صِف","Send a note and photos in advance.":"أرسل ملاحظة وصورًا مسبقًا.",
+"Your doctor reads them first, so the time is spent on answers rather than history.":"يقرؤها طبيبك أولًا، فيُصرف الوقت في الإجابات لا في سرد التاريخ.",
+"Join":"انضم","One tap from the reminder.":"نقرة واحدة من التذكير.",
+"Browser-based video with audio fallback. If the call drops, the link reconnects you to the same room.":"فيديو عبر المتصفح مع بديل صوتي. وإن انقطع الاتصال، يعيدك الرابط إلى الغرفة نفسها.",
+"A written summary, same day.":"ملخص مكتوب في اليوم نفسه.",
+"What was discussed, what to do next, and a link to book the follow-up or an in-clinic visit at a reduced fee.":"ما نوقش، وما الخطوة التالية، ورابط لحجز المتابعة أو زيارة العيادة برسوم مخفضة.",
+"Who you can speak to.":"مع من يمكنك التحدث.",
+"All four specialists hold online hours. Availability updates in real time in the booking flow.":"الاختصاصيون الأربعة جميعًا لديهم ساعات أونلاين، والمواعيد تُحدَّث لحظيًا أثناء الحجز.",
+"Cosmetic planning and second opinions":"تخطيط تجميلي وآراء ثانية",
+"Pain, emergencies, root canal follow-up":"الألم، والطوارئ، ومتابعة علاج العصب",
+"Aligner checks, children's dental questions":"متابعة التقويم الشفاف وأسئلة أسنان الأطفال",
+"Skin concerns and routine reviews":"شؤون البشرة ومراجعات الروتين",
+"Book a consultation":"احجز استشارة",
+// ---- pro page ----
+"Practice at Ora":"اعمل في أورا","Your patients. Our rooms.":"مرضاك. وغرفنا.",
+"Two fully equipped operatories in Madaba, bookable by licensed dentists who don't have a clinic of their own — or need a second chair for a day. Sterilization, reception, and machinery included. You treat; we handle the room.":"غرفتا علاج مجهزتان بالكامل في مادبا، يحجزهما أطباء أسنان مرخّصون لا يملكون عيادة — أو يحتاجون كرسيًا ثانيًا ليوم. التعقيم والاستقبال والأجهزة مشمولة. أنت تعالج، ونحن نتكفل بالغرفة.",
+"See pricing":"الأسعار",
+"Clinic 2 — daily from 9:00  ·  Clinic 1 — evenings from 19:00 and all day Friday":"الغرفة ٢ — يوميًا من ٩:٠٠ · الغرفة ١ — مساءً من ١٩:٠٠ وطوال يوم الجمعة",
+"Two rooms, ready when you are.":"غرفتان، جاهزتان متى كنت جاهزًا.",
+"Both operatories run the same standard: modern chairs, intraoral camera and screen, digital X-ray, autoclave sterilization, and a stocked materials cabinet if you want it.":"الغرفتان بالمعيار نفسه: كراسٍ حديثة، كاميرا فموية وشاشة، أشعة رقمية، تعقيم أوتوكلاف، وخزانة مواد مجهزة إن أردتها.",
+"Clinic 1":"الغرفة ١","Clinic 2":"الغرفة ٢",
+"Dr. Halasa's own operatory — the flagship room, with the full equipment wall and the panoramic window. Open to partners after his day ends:":"غرفة د. هلسا نفسها — الغرفة الرئيسية بجدار الأجهزة الكامل والنافذة البانورامية. تفتح للشركاء بعد انتهاء يومه:",
+"19:00–24:00, Saturday to Thursday, and all day Friday.":"من ١٩:٠٠ حتى منتصف الليل، السبت إلى الخميس، وطوال يوم الجمعة.",
+"The second operatory, alongside our own schedule. Bookable":"غرفة العلاج الثانية، إلى جانب جدولنا. تُحجز",
+"daily from 9:00 to midnight":"يوميًا من ٩:٠٠ حتى منتصف الليل",
+", subject to live availability — two dentists can run in parallel without meeting each other's patients.":"، حسب المواعيد المتاحة — ويمكن لطبيبين العمل بالتوازي دون أن يلتقي مرضاهما.",
+"Two ways to pay. Pick per booking.":"طريقتان للدفع. اختر عند كل حجز.",
+"Choose the model that fits the case. Big restorative day with lots of materials? Take the share. Quick cases with your own composites? Pay by the hour.":"اختر النظام الذي يناسب الحالة. يوم ترميمي كبير بمواد كثيرة؟ اختر الحصة. حالات سريعة بموادك أنت؟ ادفع بالساعة.",
+"All-inclusive share":"الحصة الشاملة","% of case fees":"٪ من رسوم الحالة",
+"You keep 65% of what your patient pays. Ora provides the room, machinery, standard materials and consumables, sterilization, reception, and payment handling. Minimum 25 JOD per booking.":"تحتفظ بـ٦٥٪ مما يدفعه مريضك. توفر أورا الغرفة والأجهزة والمواد القياسية والمستهلكات والتعقيم والاستقبال وتحصيل الدفعات. بحد أدنى ٢٥ دينارًا للحجز.",
+"Chair, machinery, and digital X-ray":"الكرسي والأجهزة والأشعة الرقمية",
+"Standard materials and consumables from our stock":"المواد القياسية والمستهلكات من مخزوننا",
+"Sterilized instrument sets per patient":"أطقم أدوات معقمة لكل مريض",
+"Reception, patient check-in, and card payments":"الاستقبال وتسجيل المرضى والدفع بالبطاقات",
+"Hourly chair":"الكرسي بالساعة","JOD / hour":"دينار / ساعة",
+"Bring your own materials and keep 100% of your fees. 20 JOD/hour daytime in Clinic 2; 25 JOD/hour for evening sessions and Fridays in Clinic 1. Two-hour minimum.":"أحضر موادك واحتفظ برسومك كاملة. ٢٠ دينارًا/ساعة نهارًا في الغرفة ٢؛ و٢٥ دينارًا/ساعة للجلسات المسائية وأيام الجمعة في الغرفة ١. بحد أدنى ساعتين.",
+"Chair, machinery, suction, and light":"الكرسي والأجهزة والشفط والإضاءة",
+"Sterilization of your instrument sets":"تعقيم أطقم أدواتك",
+"Reception and waiting area for your patients":"استقبال وصالة انتظار لمرضاك",
+"Add-ons: assistant +8 JOD/h · X-ray 3 JOD/exposure · intraoral scan 15 JOD/case":"إضافات: مساعد +٨ دنانير/س · أشعة ٣ دنانير/صورة · مسح فموي ١٥ دينارًا/حالة",
+"Rates are launch pricing and reviewed quarterly. Lab work is always billed separately at cost. First-time partners are verified once — license and one document, five minutes.":"الأسعار أسعار انطلاق وتُراجع كل ربع سنة. أعمال المختبر تُحتسب دائمًا على حدة بالتكلفة. يُوثَّق الشريك الجديد مرة واحدة — رخصة ومستند واحد، خمس دقائق.",
+"Book your session.":"احجز جلستك.",
+"Pick a room, pick your hours, tell us the case. We confirm on WhatsApp within two hours.":"اختر الغرفة وساعاتك وأخبرنا بالحالة. نؤكد عبر واتساب خلال ساعتين.",
+"Choose a room":"اختر غرفة","Pick a day and your hours":"اختر اليوم وساعاتك",
+"Next 4 weeks":"الأسابيع الأربعة القادمة","Choose a day first":"اختر يومًا أولًا","Choose a day":"اختر يومًا",
+"Choose a room first":"اختر غرفة أولًا",
+"Days with a dot have open hours in the room you chose.":"الأيام ذات النقطة فيها ساعات متاحة في الغرفة التي اخترتها.",
+"The case, and how you'd like to pay":"الحالة، وكيف تودّ الدفع",
+"What are you treating?":"ما الذي ستعالجه؟",
+"Expected total case fees (JOD)":"إجمالي رسوم الحالة المتوقعة (بالدينار)",
+"What your patient(s) will pay in this session. The split is settled the same evening.":"ما سيدفعه مريضك (أو مرضاك) في هذه الجلسة. تُسوَّى الحصة في المساء نفسه.",
+"Add-ons":"إضافات","Chairside assistant · +8 JOD/h":"مساعد بجانب الكرسي · +٨ دنانير/س",
+"Intraoral scanner · 15 JOD":"ماسح فموي · ١٥ دينارًا",
+"X-rays are billed as taken, 3 JOD per exposure — no need to pre-book.":"تُحتسب الأشعة عند التصوير، ٣ دنانير للصورة — لا حاجة للحجز المسبق.",
+"About you":"عنك","Full name":"الاسم الكامل","JDA license number":"رقم عضوية نقابة أطباء الأسنان",
+"Jordan Dental Association no.":"رقم نقابة أطباء الأسنان الأردنية","WhatsApp number":"رقم واتساب",
+"Specialty":"التخصص","e.g. General, endo, prostho":"مثال: عام، عصب، استعاضة",
+"I've read the":"قرأت","house rules":"قواعد العمل",
+"— sterilization protocol, materials logging, and 24-hour cancellation. My patients remain my patients; their records stay under my care.":"— بروتوكول التعقيم، وتسجيل المواد، والإلغاء قبل ٢٤ ساعة. مرضاي يبقون مرضاي، وسجلاتهم تبقى في عهدتي.",
+"Your session":"جلستك","Estimated total":"الإجمالي التقديري",
+"Pick a room and hours to see your estimate.":"اختر غرفة وساعات لترى التقدير.",
+"Request this session":"اطلب هذه الجلسة",
+"Nothing is charged now. We confirm on WhatsApp within two hours; hourly sessions are paid at check-in, shares are settled the same evening.":"لا يُدفع شيء الآن. نؤكد عبر واتساب خلال ساعتين؛ تُدفع الجلسات بالساعة عند الوصول، وتُسوَّى الحصص في المساء نفسه.",
+"Request sent.":"تم إرسال الطلب.",
+"We'll confirm on WhatsApp within two hours. First time at Ora? Bring your JDA card to check-in — verification takes five minutes, once.":"سنؤكد عبر واتساب خلال ساعتين. أول مرة في أورا؟ أحضر بطاقة النقابة عند الوصول — التوثيق خمس دقائق، ولمرة واحدة.",
+"Book another session":"احجز جلسة أخرى","Short, and non-negotiable.":"قصيرة، وغير قابلة للتفاوض.",
+"Sterility":"التعقيم","Every set autoclaved, every surface reset.":"كل طقم يُعقَّم، وكل سطح يُجهَّز من جديد.",
+"Instrument sets are sealed and dated. Rooms are turned over between dentists by our team, never rushed between patients.":"الأطقم مغلقة ومؤرخة. وفريقنا يجهّز الغرفة بين طبيب وآخر، من دون استعجال بين المرضى.",
+"Materials":"المواد","Everything from our cabinet is logged.":"كل ما يؤخذ من خزانتنا يُسجَّل.",
+"On the share model, take what the case needs. On hourly, our stock is available at list price if you run short — logged at the chair, added at check-out.":"في نظام الحصة، خذ ما تحتاجه الحالة. وفي نظام الساعة، مخزوننا متاح بسعر القائمة إن نقصت موادك — يُسجَّل عند الكرسي ويُضاف عند المغادرة.",
+"Your patients":"مرضاك","They're yours, before and after.":"هم مرضاك، قبل الجلسة وبعدها.",
+"Ora doesn't market to your patients or keep their clinical records. You bring them, you treat them, you follow up with them.":"أورا لا تسوّق لمرضاك ولا تحتفظ بسجلاتهم السريرية. أنت تُحضرهم، وأنت تعالجهم، وأنت تتابعهم.",
+"Cancellation":"الإلغاء","Free until 24 hours before.":"مجاني حتى ٢٤ ساعة قبل الموعد.",
+"Inside 24 hours, the two-hour minimum (or the 25 JOD share minimum) applies. Emergencies happen; talk to us.":"خلال الـ٢٤ ساعة الأخيرة يُطبَّق حد الساعتين الأدنى (أو حد الحصة ٢٥ دينارًا). الطوارئ تحدث؛ كلّمنا.",
+// ---- pro flow dynamic ----
+"Flagship — evenings & Fridays":"الغرفة الرئيسية — مساءً وأيام الجمعة","Daily from 9:00":"يوميًا من ٩:٠٠",
+"Restorative":"ترميمي","Endodontics":"علاج عصب","Prosthodontics":"استعاضة","Extraction / surgery":"قلع / جراحة",
+"Orthodontics":"تقويم","Pediatric":"أطفال","Cosmetic / veneers":"تجميل / فينير","Other":"أخرى",
+"Ora takes 35% of case fees. Materials, machinery, sterilization, and reception included. Minimum 25 JOD.":"تأخذ أورا ٣٥٪ من رسوم الحالة. المواد والأجهزة والتعقيم والاستقبال مشمولة. بحد أدنى ٢٥ دينارًا.",
+"Bring your own materials, keep 100% of your fees. 20 JOD/h daytime, 25 JOD/h evenings & Fridays. Two-hour minimum.":"أحضر موادك واحتفظ برسومك كاملة. ٢٠ دينارًا/س نهارًا و٢٥ دينارًا/س مساءً وأيام الجمعة. بحد أدنى ساعتين.",
+"Clinic 1 opens to partners at 19:00 on working days.":"تفتح الغرفة ١ للشركاء عند ١٩:٠٠ في أيام العمل.",
+"Select consecutive hours. Two-hour minimum applies on the hourly model.":"اختر ساعات متتالية. يسري حد الساعتين الأدنى على نظام الساعة.",
+"Room":"الغرفة","When":"الموعد","Case":"الحالة","Model":"النظام",
+"All-inclusive · 35% to Ora":"الحصة الشاملة · ٣٥٪ لأورا","Expected case fees":"رسوم الحالة المتوقعة",
+"Ora share (35%)":"حصة أورا (٣٥٪)","You keep":"تحتفظ بـ","Hourly · own materials":"بالساعة · بموادك",
+"Chair":"الكرسي","Assistant":"المساعد","Intraoral scan":"مسح فموي",
+"Settled the same evening from the patient payment. Includes materials from our stock.":"تُسوَّى في المساء نفسه من دفعة المريض. تشمل المواد من مخزوننا.",
+"Enter expected case fees to see your split. 25 JOD minimum applies.":"أدخل رسوم الحالة المتوقعة لترى حصتك. يسري حد أدنى ٢٥ دينارًا.",
+"Billed at the two-hour minimum.":"تُحتسب بحد الساعتين الأدنى.",
+"Paid at check-in. X-rays billed as taken, 3 JOD each.":"تُدفع عند الوصول. الأشعة تُحتسب عند التصوير، ٣ دنانير للصورة.",
+// ---- book page + flow ----
+"Are you in severe pain right now?":"هل تشعر بألم شديد الآن؟",
+"We'll skip the questions and show the soonest emergency time.":"سنتجاوز الأسئلة ونعرض أقرب موعد طوارئ.",
+"Yes, fast track me":"نعم، المسار السريع","What do you need help with?":"بمَ نساعدك؟",
+"Choose the area, then the closest description. You can explain more on the next step.":"اختر المجال ثم أقرب وصف. ويمكنك التوضيح أكثر في الخطوة التالية.",
+"How long do you need?":"كم من الوقت تحتاج؟",
+"Fifteen is enough for a question or a second look. Thirty for a plan.":"خمس عشرة دقيقة تكفي لسؤال أو رأي ثانٍ. وثلاثون لخطة.",
+"Tell us what's bothering you.":"أخبرنا بما يزعجك.",
+"A few words is fine. Your specialist reads this before you arrive, so you won't have to repeat yourself.":"كلمات قليلة تكفي. يقرأها اختصاصيّك قبل وصولك، فلا تضطر إلى الإعادة.",
+"How would you describe the discomfort?":"كيف تصف الانزعاج؟","When did it start?":"متى بدأ؟",
+"In your own words":"بكلماتك أنت",
+"For example: sharp pain in a lower back tooth when I drink something cold, started three days ago.":"مثال: ألم حاد في ضرس سفلي خلفي عند شرب شيء بارد، بدأ قبل ثلاثة أيام.",
+"Photos":"الصور","Add a photo if it helps (optional)":"أضف صورة إن كانت تساعد (اختياري)",
+"Images stay private to your care team and are deleted on request.":"تبقى الصور خاصة بفريق رعايتك وتُحذف عند الطلب.",
+"Choose your specialist.":"اختر اختصاصيّك.",
+"We've placed the best match first. Any of them will take good care of you.":"وضعنا الأنسب أولًا، وكلهم سيعتنون بك جيدًا.",
+"Pick a time.":"اختر وقتًا.",
+"This is live availability. Days with a dot have open times; crossed-out slots are taken.":"هذه مواعيد محدثة. الأيام ذات النقطة فيها أوقات متاحة، والأوقات المشطوبة محجوزة.",
+"Next four weeks":"الأسابيع الأربعة القادمة","Confirm and pay.":"أكّد وادفع.",
+"Check the details, tell us how to reach you, and you're done.":"راجع التفاصيل، وأخبرنا كيف نتواصل معك، وانتهيت.",
+"Your name":"اسمك","Email":"البريد الإلكتروني","Phone":"الهاتف",
+"Reminders go by WhatsApp and email. Either one is enough.":"تصل التذكيرات عبر واتساب والبريد. أحدهما يكفي.",
+"Payment":"الدفع","Card, Apple Pay, or CliQ. Payment is simulated in this preview build.":"بطاقة، أو Apple Pay، أو كليك. الدفع محاكاة في هذه النسخة التجريبية.",
+"Let's get you seen.":"لنوصلك إلى الطبيب.",
+"The soonest emergency time with a doctor who handles pain first.":"أقرب موعد طوارئ مع طبيب يعالج الألم أولًا.",
+"Soonest available":"أقرب موعد متاح","Take this time":"احجز هذا الموعد","Call the clinic":"اتصل بالعيادة",
+"See other times":"مواعيد أخرى",
+"If you have swelling that affects breathing or swallowing, go to the nearest emergency department first.":"إن كان لديك تورّم يؤثر على التنفس أو البلع، فتوجه أولًا إلى أقرب قسم طوارئ.",
+"Dental consultation":"استشارة أسنان","General check-up":"فحص عام","Teeth cleaning":"تنظيف أسنان",
+"Root canal":"علاج عصب","Gum issues":"مشاكل لثة","Children's dentistry":"أسنان أطفال","Emergency":"طارئ",
+"Veneers":"فينير","Dental implants":"زراعة أسنان","Braces / orthodontics":"تقويم أسنان",
+"Facial treatment":"جلسة وجه","Acne concerns":"حب الشباب","Laser treatment":"جلسة ليزر",
+"Skin rejuvenation":"نضارة البشرة","Anti-aging":"مقاومة التقدّم في السن","Follow-up consultation":"استشارة متابعة",
+"General advisory":"استشارة عامة","Something else":"شيء آخر","Mild":"خفيف","Moderate":"متوسط","Severe":"شديد",
+"Ongoing":"مستمر","Today":"اليوم","A few days ago":"قبل أيام","More than a week ago":"قبل أكثر من أسبوع",
+"Handles pain first, explanation second, judgement never.":"يعالج الألم أولًا، ويشرح ثانيًا، ولا يُصدر أحكامًا أبدًا.",
+"Patient with nervous children and adults who still feel like one at the dentist.":"صبورة مع الأطفال القلقين، ومع الكبار الذين ما زالوا يشعرون مثلهم عند طبيب الأسنان.",
+"Treats skin as a long conversation, not a single appointment.":"تتعامل مع البشرة كحديث طويل، لا موعدًا واحدًا.",
+"DDS (UoJ), MFD RCSI & RCSE, PGDip Aesthetic Dentistry (Leeds). Plans smiles with digital scans so you see the result first.":"بكالوريوس (الجامعة الأردنية)، زمالة MFD، ودبلوم عالٍ في التجميل (ليدز). يخطط الابتسامة بالمسح الرقمي لترى النتيجة أولًا.",
+"Times are clinic local time (Asia/Amman).":"المواعيد بتوقيت العيادة المحلي (عمّان).",
+"Date":"التاريخ","Service":"الخدمة","Duration":"المدة","Reference":"المرجع",
+"Pay and confirm":"ادفع وأكّد","Pick a day first":"اختر يومًا أولًا",
+"Add your name and one way to reach you.":"أضف اسمك ووسيلة واحدة للتواصل.",
+"You're booked,":"تم حجزك،",", and a reminder will arrive the day before.":"، وسيصلك تذكير قبل الموعد بيوم.",
+". We've sent the details to":". أرسلنا التفاصيل إلى","Reschedule":"غيّر الموعد",
+"JOD (simulated in this preview)":"دينار (محاكاة في هذه النسخة)","JOD to Ora":"دينارًا لأورا",
+"Su":"أحد","Mo":"إثن","Tu":"ثلا","We":"أرب","Th":"خمي","Fr":"جمع","Sa":"سبت",
+"Sun":"الأحد","Mon":"الإثنين","Tue":"الثلاثاء","Wed":"الأربعاء","Thu":"الخميس","Fri":"الجمعة","Sat":"السبت",
+", emergency care · 30 minutes · 40 JOD":"، رعاية طارئة · ٣٠ دقيقة · ٤٠ دينارًا",
+"Dr. Masri":"د. المصري","Dr. Haddad":"د. حداد","Dr. Saleh":"د. صالح",
+"Clinic 2 — daily from 9:00 · Clinic 1 — evenings from 19:00 and all day Friday":"الغرفة ٢ — يوميًا من ٩:٠٠ · الغرفة ١ — مساءً من ١٩:٠٠ وطوال يوم الجمعة",
+"Dr. Halasa\u2019s operatory. 19:00\u201324:00 Sat\u2013Thu, all day Friday.":"غرفة د. هلسا. من ١٩:٠٠ حتى منتصف الليل السبت–الخميس، وطوال يوم الجمعة.",
+"Second operatory, alongside our own schedule. 09:00\u201324:00 daily.":"غرفة العلاج الثانية، إلى جانب جدولنا. يوميًا من ٩:٠٠ حتى منتصف الليل.",
+"Pain, check-ups, cosmetic, children":"ألم، فحوصات، تجميل، أطفال",
+"Consultation, facials, laser, rejuvenation":"استشارات، جلسات وجه، ليزر، نضارة",
+"Video with a specialist, 15 or 30 min":"فيديو مع اختصاصي، ١٥ أو ٣٠ دقيقة",
+};
+// placeholders (input hints)
+const TRP = {
+"you@example.com":"you@example.com","Full name":"الاسم الكامل","+962 7…":"+962 7…","07…":"07…",
+"Dr. …":"د. …","e.g. 400":"مثال: 400","e.g. General, endo, prostho":"مثال: عام، عصب، استعاضة",
+"Jordan Dental Association no.":"رقم نقابة أطباء الأسنان الأردنية",
+"For example: sharp pain in a lower back tooth when I drink something cold, started three days ago.":"مثال: ألم حاد في ضرس سفلي خلفي عند شرب شيء بارد، بدأ قبل ثلاثة أيام.",
 };
 (function(){
   const KEY='ora-lang';
   const btn=document.getElementById('langToggle');
-  const EN={}; // captured from the DOM on first switch
-  function capture(){
-    document.querySelectorAll('[data-i18n],[data-i18n-html]').forEach(el=>{
-      const k=el.dataset.i18n||el.dataset.i18nHtml;
-      if(!(k in EN)) EN[k]= el.dataset.i18nHtml!==undefined ? el.innerHTML : el.textContent;
+  const ORIG=new WeakMap(), ORIGP=new WeakMap();
+  let lang='en', busy=false;
+  const RX=[[/\bJOD\b/g,'دينار'],[/(\d+)\s*h\b/g,'$1 س']];
+  function trText(n){
+    if(!ORIG.has(n)) ORIG.set(n, n.data);
+    const src=ORIG.get(n), k=src.replace(/\u00a0/g,' ').trim();
+    if(k in TR){ const m=src.match(/^(\s*)[\s\S]*?(\s*)$/); n.data=(m?m[1]:'')+TR[k]+(m?m[2]:''); return; }
+    let t=src, hit=false;
+    for(const [re,rep] of RX){ if(re.test(t)){ t=t.replace(re,rep); hit=true; } re.lastIndex=0; }
+    if(hit) n.data=t;
+  }
+  function walk(root, toAr){
+    const w=document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode(n){
+      const p=n.parentNode && n.parentNode.nodeName;
+      return (p==='SCRIPT'||p==='STYLE') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+    }});
+    let n; while(n=w.nextNode()){
+      if(toAr) trText(n);
+      else if(ORIG.has(n)) n.data=ORIG.get(n);
+    }
+    const scope = root.querySelectorAll ? root : document.body;
+    scope.querySelectorAll('[placeholder]').forEach(el=>{
+      if(!ORIGP.has(el)) ORIGP.set(el, el.placeholder);
+      const src=ORIGP.get(el);
+      el.placeholder = toAr ? (TRP[src]!==undefined ? TRP[src] : (TR[src]!==undefined ? TR[src] : src)) : src;
     });
   }
-  function apply(lang){
-    document.documentElement.lang = lang;
+  let obs;
+  function apply(next){
+    lang=next; busy=true;
+    document.documentElement.lang=lang;
     document.documentElement.dir = lang==='ar' ? 'rtl' : 'ltr';
-    document.querySelectorAll('[data-i18n]').forEach(el=>{
-      const k=el.dataset.i18n, v = lang==='ar' ? AR[k] : EN[k];
-      if(v!==undefined) el.textContent=v;
-    });
-    document.querySelectorAll('[data-i18n-html]').forEach(el=>{
-      const k=el.dataset.i18nHtml, v = lang==='ar' ? AR[k] : EN[k];
-      if(v!==undefined) el.innerHTML=v;
-    });
+    walk(document.body, lang==='ar');
+    if(obs) obs.takeRecords();
+    busy=false;
     if(btn) btn.textContent = lang==='ar' ? 'EN' : 'عربي';
     try{ localStorage.setItem(KEY,lang) }catch(e){}
   }
-  capture();
-  let lang='en';
+  obs = new MutationObserver(muts=>{
+    if(lang!=='ar'||busy) return; busy=true;
+    for(const m of muts){
+      if(m.type==='characterData' && !ORIG.has(m.target)) trText(m.target);
+      m.addedNodes && m.addedNodes.forEach(n=>{
+        if(n.nodeType===3){ trText(n); }
+        else if(n.nodeType===1) walk(n, true);
+      });
+    }
+    obs.takeRecords();
+    busy=false;
+  });
+  obs.observe(document.body,{subtree:true,childList:true,characterData:true});
   try{ lang = localStorage.getItem(KEY)||'en' }catch(e){}
-  if(lang==='ar') apply('ar');
-  if(btn) btn.onclick=()=>apply(document.documentElement.lang==='ar'?'en':'ar');
+  if(lang==='ar') apply('ar'); else if(btn) btn.textContent='عربي';
+  if(btn) btn.onclick=()=>apply(lang==='ar'?'en':'ar');
 })();

@@ -24,7 +24,7 @@ const params = new URLSearchParams(location.search);
 // ---------- helpers ----------
 const $ = s=>document.querySelector(s), $$ = s=>[...document.querySelectorAll(s)];
 const pad=n=>String(n).padStart(2,'0');
-const fmtDate=d=>d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+const fmtDate=d=>d.toLocaleDateString((document.documentElement.lang==='ar'?'ar-JO':'en-GB'),{weekday:'long',day:'numeric',month:'long'});
 function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
 // JS getDay: 0=Sun. Our schedule uses 0=Sun..6=Sat (Jordan week Sat–Thu, Friday closed).
 function slotsFor(doc, date, step){
@@ -115,7 +115,7 @@ function renderCalendar(){
   ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>{const s=document.createElement('div');s.className='dow';s.textContent=d;grid.appendChild(s)});
   // pad to weekday of first date
   for(let i=0;i<dates[0].getDay();i++){grid.appendChild(document.createElement('div'))}
-  $('#calTitle').textContent = dates[0].toLocaleDateString('en-GB',{month:'long',year:'numeric'}) + (dates[27].getMonth()!==dates[0].getMonth()?' – '+dates[27].toLocaleDateString('en-GB',{month:'long'}):'');
+  $('#calTitle').textContent = dates[0].toLocaleDateString((document.documentElement.lang==='ar'?'ar-JO':'en-GB'),{month:'long',year:'numeric'}) + (dates[27].getMonth()!==dates[0].getMonth()?' – '+dates[27].toLocaleDateString((document.documentElement.lang==='ar'?'ar-JO':'en-GB'),{month:'long'}):'');
   dates.forEach(d=>{
     const free = slotsFor(doc,d,step).some(s=>!s.taken);
     const c=document.createElement('div');c.className='day-cell '+(free?'avail':'off');c.textContent=d.getDate();
@@ -198,7 +198,7 @@ function fastTrack(){
   if(found){
     state.doc=doc.id;state.date=found.d.toDateString();state.time=found.s.t;
     const isToday=found.d.toDateString()===today.toDateString();
-    $('#fastWhen').textContent=(isToday?'Today ':found.d.toLocaleDateString('en-GB',{weekday:'long'})+' ')+found.s.t;
+    $('#fastWhen').textContent=(isToday?'Today ':found.d.toLocaleDateString((document.documentElement.lang==='ar'?'ar-JO':'en-GB'),{weekday:'long'})+' ')+found.s.t;
     $('#fastWho').textContent=`${doc.name}, emergency care · 30 minutes · 40 JOD`;
   } else {
     $('#fastWhen').textContent='Call us now';

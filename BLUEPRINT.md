@@ -89,3 +89,7 @@ See `higgsfield-prompts.md`.
 - **Brand**: "ORA" lockup — the O is a drawn tooth with a small smile (assets/brand/ora-mark.svg); matching SVG favicon. Dr. Halasa's gold AH monogram sits on the hero's right, feathered into the dark.
 - **Languages**: EN/AR toggle in every nav, full RTL, Amiri + IBM Plex Sans Arabic. The homepage and shared nav/footer are translated; the interactive booking/partner flows remain English this phase and get full AR in the Supabase build.
 - **Clinic portal** (/admin.html): staff gate (Awe.halasa71@gmail.com + hello@ora.clinic), Today per-room lists, day calendar with block/book on click, partner-request approve/decline that places sessions on the calendar. Data is a browser-local prototype; the real build replaces it with Supabase auth + Postgres so all devices see one calendar.
+
+### Phase 1.3
+- Brand reverted to the plain "Ora." wordmark by request; tooth mark and gold monogram placements removed. Favicon: emerald "O." tile.
+- i18n v2: dictionary-based full-page translation (~330 strings) with a DOM observer, so all five pages AND the interactive booking/partner flows render in Arabic, with ar-JO dates. Switching back restores exact English.

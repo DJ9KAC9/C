@@ -19,7 +19,7 @@ const CASES = ['Restorative','Endodontics','Prosthodontics','Extraction / surger
 const state = { room:null, date:null, hours:[], model:null, caseType:null, caseFee:0, addons:{assist:false, scan:false} };
 const $ = s=>document.querySelector(s), $$ = s=>[...document.querySelectorAll(s)];
 const pad = n=>String(n).padStart(2,'0');
-const fmtDate = d=>d.toLocaleDateString('en-GB',{weekday:'long', day:'numeric', month:'long'});
+const fmtDate = d=>d.toLocaleDateString((document.documentElement.lang==='ar'?'ar-JO':'en-GB'),{weekday:'long', day:'numeric', month:'long'});
 function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
 
 // A room-hour is taken if Ora's own operations (or another partner) hold it.
