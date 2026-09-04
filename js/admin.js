@@ -15,7 +15,7 @@ function save(db){ try{localStorage.setItem(DB_KEY, JSON.stringify(db))}catch(e)
 function seed(){
   const names=['Faris N.','Dana K.','Yara S.','Omar T.','Lina M.','Hala R.','Sami D.','Noor A.','Rami H.','Maya B.'];
   const cases=['Check-up','Cleaning','Root canal','Whitening','Veneer fit','Filling','Emergency','Kids — first visit','Implant review','Gum treatment'];
-  const db={appts:[], reqs:[], blocks:[]};
+  const db={appts:[], reqs:[], blocks:[], txns:[]};
   const today=new Date(); today.setHours(0,0,0,0);
   for(let i=0;i<14;i++){
     const d=new Date(today); d.setDate(today.getDate()+i); const k=dkey(d);
@@ -33,9 +33,22 @@ function seed(){
   db.reqs.push(rq(1,'c1',19,22,'Dr. Sara Qudah','Restorative','Hourly · 3h × 25 JOD'));
   db.reqs.push(rq(2,'c2',20,22,'Dr. Khaled Nims','Endodontics','Share · 35% of ~300 JOD'));
   db.reqs.push(rq(3,'c1',9,13,'Dr. Rula Haddadin','Cosmetic / veneers','Hourly · 4h × 25 JOD (Friday)'));
+  // seed transactions from today's and yesterday's appointments
+  const fees={'Check-up':25,'Cleaning':45,'Root canal':120,'Whitening':180,'Veneer fit':60,'Filling':35,'Emergency':40,'Kids — first visit':25,'Implant review':30,'Gum treatment':35,'Booked by reception':30};
+  db.appts.slice(0,40).forEach((a,i)=>{
+    const d=new Date(today); d.setDate(today.getDate()-(i%7)); // demo payments across the past week
+    db.txns.push({id:'t'+a.id, date:dkey(d), who:a.who, what:a.what, amount:fees[a.what]||30, kind:'patient', status: hash(a.id)%4? 'paid':'pending'});
+  });
   return db;
 }
-let db = load() || seed(); save(db);
+let db = load();
+if(!db){ db=seed(); db.seeded=true; }
+else if(!db.seeded){ // store was created by the public site before the portal first opened: merge the demo seed in
+  const s0=seed();
+  db={appts:[...s0.appts, ...(db.appts||[])], reqs:[...s0.reqs, ...(db.reqs||[])], blocks:(db.blocks||[]), txns:[...s0.txns, ...(db.txns||[])], seeded:true};
+}
+if(!db.txns) db.txns=[];
+save(db);
 
 // ---------- gate ----------
 function signedIn(){ try{return localStorage.getItem('ora-admin-user')}catch(e){return null} }
@@ -123,10 +136,48 @@ function renderReqs(){
   $$('[data-ok]').forEach(b=>b.onclick=()=>{
     const r=db.reqs.find(x=>x.id===b.dataset.ok); r.status='approved';
     for(let h=r.h1; h<r.h2; h++) db.appts.push({id:'p'+r.id+h, room:r.room, date:r.date, h, who:r.doc, what:r.caseT, kind:'partner', doc:r.doc, status:'booked'});
+    const hrs=r.h2-r.h1, hourly=/Hourly/.test(r.model), rate=(r.room==='c1'||r.h1>=19)?25:20;
+    const amt = hourly ? Math.max(hrs,2)*rate : Math.max(Math.round((parseInt(r.model.replace(/[^0-9]/g,''))||300)*0.35), 25);
+    db.txns.push({id:'ts'+r.id, date:r.date, who:r.doc, what:(hourly?'Chair hire · ':'35% share · ')+r.caseT, amount:amt, kind:'partner', status:'pending'});
     save(db); render(); toast('Approved — session placed on the calendar.');
   });
   $$('[data-no]').forEach(b=>b.onclick=()=>{ const r=db.reqs.find(x=>x.id===b.dataset.no); r.status='declined'; save(db); render(); });
 }
 
-function render(){ renderToday(); renderCal(); renderReqs(); }
+// ---------- bookings ----------
+function renderBookings(){
+  const q=($('#bookSearch').value||'').toLowerCase();
+  const today=dkey(new Date());
+  const up=db.appts.filter(a=>a.date>=today && a.kind==='patient').sort((a,b)=>a.date===b.date?a.h-b.h:(a.date<b.date?-1:1));
+  const list=up.filter(a=>!q||a.who.toLowerCase().includes(q)).slice(0,60);
+  $('#bookList').innerHTML=list.map(a=>{
+    const room=a.room==='c1'?'Clinic 1':'Clinic 2';
+    const cancel = a.status!=='cancelled' ? `<button class="btn btn-ghost btn-sm" data-cancel="${a.id}" type="button">Cancel</button>` : '<span class="a-tag">cancelled</span>';
+    return `<div class="a-row"><b class="a-time">${a.date.slice(5)} · ${pad(a.h)}:00</b><div><b>${a.who}</b><span class="small"> — ${a.what} · ${room}</span></div>${cancel}</div>`;
+  }).join('')||'<p class="small">No upcoming bookings match.</p>';
+  $$('[data-cancel]').forEach(b=>b.onclick=()=>{ const a=db.appts.find(x=>x.id===b.dataset.cancel); if(a&&confirm('Cancel '+a.who+'\u2019s booking? The hour becomes free.')){ db.appts=db.appts.filter(x=>x!==a); save(db); render(); }});
+}
+$('#bookSearch') && $('#bookSearch').addEventListener('input', ()=>renderBookings());
+// ---------- money ----------
+const jod=n=>n+' JOD';
+function renderMoney(){
+  const today=dkey(new Date());
+  const week=dkey(new Date(Date.now()-6*864e5));
+  const t=db.txns||[];
+  const collToday=t.filter(x=>x.kind==='patient'&&x.status==='paid'&&x.date===today).reduce((s,x)=>s+x.amount,0);
+  const collWeek=t.filter(x=>x.kind==='patient'&&x.status==='paid'&&x.date>=week&&x.date<=today).reduce((s,x)=>s+x.amount,0);
+  const owed=t.filter(x=>x.kind==='partner'&&x.status==='pending').reduce((s,x)=>s+x.amount,0);
+  const share=t.filter(x=>x.kind==='partner').reduce((s,x)=>s+x.amount,0);
+  $('#mToday').textContent=jod(collToday); $('#mWeek').textContent=jod(collWeek);
+  $('#mOwed').textContent=jod(owed); $('#mShare').textContent=jod(share);
+  const rows=[...t].sort((a,b)=>a.date<b.date?1:-1).slice(0,50);
+  $('#txnList').innerHTML=rows.map(x=>{
+    const act = x.status==='pending'
+      ? `<button class="btn btn-primary btn-sm" data-settle="${x.id}" type="button">${x.kind==='partner'?'Mark transferred':'Mark paid'}</button>`
+      : `<span class="a-tag done">${x.kind==='partner'?'transferred':'paid'}</span>`;
+    return `<div class="a-row"><b class="a-time">${x.date.slice(5)}</b><div><b>${x.who}</b><span class="small"> — ${x.what}</span></div><div style="display:flex;gap:12px;align-items:center"><b>${jod(x.amount)}</b>${act}</div></div>`;
+  }).join('')||'<p class="small">No transactions yet.</p>';
+  $$('[data-settle]').forEach(b=>b.onclick=()=>{ const x=db.txns.find(y=>y.id===b.dataset.settle); x.status=x.kind==='partner'?'transferred':'paid'; save(db); renderMoney(); });
+}
+function render(){ renderToday(); renderCal(); renderReqs(); renderBookings(); renderMoney(); }
 gate();

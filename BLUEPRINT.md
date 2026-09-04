@@ -93,3 +93,12 @@ See `higgsfield-prompts.md`.
 ### Phase 1.3
 - Brand reverted to the plain "Ora." wordmark by request; tooth mark and gold monogram placements removed. Favicon: emerald "O." tile.
 - i18n v2: dictionary-based full-page translation (~330 strings) with a DOM observer, so all five pages AND the interactive booking/partner flows render in Arabic, with ar-JO dates. Switching back restores exact English.
+
+### Phase 1.4 — real clinic details + dashboard
+- Real details everywhere: Al-Gharbi St. 181 Madaba, tel +962 7 9222 2427 (tap-to-call), hours Sat–Thu 9:00–22:00.
+- Full official service list on the homepage ("Everything we treat"): 13 dental lines, facial aesthetics (Botox, fillers, Profhilo, mesotherapy, boosters), Skin Lounge (HydroFacial etc.), plus a "Digital precision" note (intraoral scanning, premium materials). All bookable in the flow with fees/durations.
+- Doctors: Dr. Awen Halasa (عون الهلسة — Arabic corrected) + Dr. Rana Odeh (MSc Orthodontics, UoJ; د. رنا عودة). Placeholder doctors removed everywhere incl. booking logic.
+- Rooms named Clinic 1 / Clinic 2 in English and كلينيك 1 / كلينيك 2 in Arabic.
+- Online consultation repriced 20% below in-clinic: 15 min 16 JOD, 30 min 28 JOD.
+- Clinic portal is now a dashboard: Today, Calendar, Bookings (search/cancel), Partner requests (approve→calendar+settlement), Money (collected today/7-days, owed to partners, transaction ledger with mark-paid / mark-transferred). Site bookings and partner requests on the same browser feed straight into it.
+- Still browser-local by design. The real backend (Supabase Postgres + auth + HyperPay/PayTabs for actual money movement) is the next build; this dashboard is its exact spec.

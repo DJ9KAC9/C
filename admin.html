@@ -32,7 +32,9 @@
     <ul>
       <li><button class="tab-link on" data-tab="today" type="button">Today</button></li>
       <li><button class="tab-link" data-tab="cal" type="button">Calendar</button></li>
+      <li><button class="tab-link" data-tab="book" type="button">Bookings</button></li>
       <li><button class="tab-link" data-tab="req" type="button">Partner requests <span class="badge" id="reqBadge" hidden></span></button></li>
+      <li><button class="tab-link" data-tab="money" type="button">Money</button></li>
     </ul>
     <div class="nav-actions"><span class="small" id="whoami"></span><button class="btn btn-ghost btn-sm" id="signOut" type="button">Sign out</button></div>
   </nav>
@@ -68,6 +70,24 @@
       <div class="a-list" id="reqList"></div>
     </section>
 
+  
+    <section class="a-tab" id="t-book" hidden>
+      <div class="a-head"><h2 style="font-size:38px">Bookings</h2>
+        <input id="bookSearch" placeholder="Search by name…" style="max-width:260px"></div>
+      <div class="a-list" id="bookList"></div>
+    </section>
+
+    <section class="a-tab" id="t-money" hidden>
+      <div class="a-head"><h2 style="font-size:38px">Money</h2>
+        <span class="small">Patient payments and partner settlements. Transfers are recorded here; the bank leg happens in your banking app until the payment provider is wired in.</span></div>
+      <div class="m-cards">
+        <div class="m-card"><span class="small">Collected today</span><b id="mToday">—</b></div>
+        <div class="m-card"><span class="small">Collected · 7 days</span><b id="mWeek">—</b></div>
+        <div class="m-card"><span class="small">Owed to partners</span><b id="mOwed">—</b></div>
+        <div class="m-card"><span class="small">Partner fees · booked</span><b id="mShare">—</b></div>
+      </div>
+      <div class="a-list" id="txnList" style="margin-top:26px"></div>
+    </section>
   </main>
 </div>
 

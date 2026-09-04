@@ -1,3 +1,5 @@
+
+function pushReqToPortal(req){try{const k='ora-admin-v1';const db=JSON.parse(localStorage.getItem(k))||{appts:[],reqs:[],blocks:[],txns:[]};db.reqs.push(req);localStorage.setItem(k,JSON.stringify(db));}catch(e){}}
 // Practice at Ora — partner chair booking prototype.
 // Availability is deterministic per room+day so it behaves like a live calendar.
 // Rules: Clinic 1 (Dr. Halasa's room) = Sat–Thu 19:00–24:00 + all day Friday (09:00–24:00).
@@ -167,6 +169,7 @@ function wireSubmit(){
   ['dName','dLic','dPhone','dSpec'].forEach(id=>$('#'+id).addEventListener('input',update));
   $('#agree').addEventListener('change',update);
   $('#submit').onclick = ()=>{
+    pushReqToPortal({id:'PR-'+Date.now().toString(36).toUpperCase(), room:state.room, date:state.date.toISOString().slice(0,10), h1:Math.min(...state.hours), h2:Math.max(...state.hours)+1, doc:$('#dName').value.trim(), caseT:state.caseType, model: state.model==='share' ? ('Share · 35% of ~'+(state.caseFee||300)+' JOD') : 'Hourly', status:'pending'});
     const e = estimate(); if(!e) return;
     document.querySelector('.pro-flow').hidden = true;
     const done = $('#proDone'); done.hidden = false;
