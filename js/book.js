@@ -16,7 +16,7 @@ const DURATION = {'Emergency':30,'Tooth pain':30,'General check-up':30,'Teeth cl
 const FEES = {'Emergency':40,'Tooth pain':30,'General check-up':25,'Teeth cleaning':45,'Whitening':180,'Braces / orthodontics':40,'Dental implants':60,'Veneers':60,'Cosmetic dentistry':40,'Gum issues':35,'Root canal':120,"Children's dentistry":25,'Skin consultation':35,'Facial treatment':90,'Acne concerns':35,'Anti-aging':60,'Skin rejuvenation':110,'Laser treatment':95,'Something else':30,'Crowns & bridges':50,'Full-mouth rehabilitation':60,'HydroFacial':85,'Botox':120,'Dermal fillers':150,'Profhilo':160,'Mesotherapy':90};
 const ONLINE_FEES = {15:16, 30:28}; // 20% below in-clinic
 
-const state = { cat:null, concern:null, severity:null, onset:null, note:'', files:0, doc:null, date:null, time:null, duration:30, fee:0, fast:false, online:false, onlineLen:15 };
+const state = { cat:null, concern:null, concerns:[], severity:null, onset:null, note:'', files:0, doc:null, date:null, time:null, duration:30, fee:0, fast:false, online:false, onlineLen:15 };
 const params = new URLSearchParams(location.search);
 
 // ---------- helpers ----------
@@ -54,7 +54,7 @@ function show(i){
 }
 function canContinue(){
   switch(STEPS[cur]){
-    case 'cat': return !!state.concern;
+    case 'cat': return state.online ? !!state.concern : state.concerns.length>0;
     case 'describe': return true;
     case 'doc': return !!state.doc;
     case 'time': return !!(state.date&&state.time);
@@ -70,18 +70,35 @@ function renderCats(){
   for(const [k,c] of Object.entries(CATS)){
     const b=document.createElement('button');b.className='opt'+(state.cat===k?' on':'');
     b.innerHTML=`<b>${c.title}</b><span>${k==='dental'?'Pain, check-ups, cosmetic, children':k==='skin'?'Consultation, facials, laser, rejuvenation':'Video with a specialist, 15 or 30 min'}</span>`;
-    b.onclick=()=>{state.cat=k;state.online=(k==='online');state.concern=null;renderCats();renderConcerns();refresh()};
+    b.onclick=()=>{state.cat=k;state.online=(k==='online');if(state.online){state.concerns=[];state.concern=null}renderCats();renderConcerns();refresh()};
     box.appendChild(b);
   }
   renderConcerns();
+}
+function selectionLine(){
+  const el=$('#pickCount'); if(!el) return;
+  if(state.online||!state.concerns.length){ el.textContent=''; return; }
+  const mins=state.concerns.reduce((t,c)=>t+(DURATION[c]||30),0);
+  const fee=state.concerns.reduce((t,c)=>t+(FEES[c]||30),0);
+  el.textContent=state.concerns.join(' + ')+' · ~'+mins+' min · '+fee+' JOD';
 }
 function renderConcerns(){
   const box=$('#concerns');box.innerHTML='';
   if(!state.cat) return;
   CATS[state.cat].concerns.forEach(c=>{
-    const b=document.createElement('button');b.className='pill'+(state.concern===c?' on':'');b.textContent=c;
-    b.onclick=()=>{state.concern=c;renderConcerns();refresh()};box.appendChild(b);
+    const on = state.online ? state.concern===c : state.concerns.includes(c);
+    const b=document.createElement('button');b.className='pill'+(on?' on':'');b.textContent=c;
+    b.onclick=()=>{
+      if(state.online){ state.concern=c; }
+      else {
+        const i=state.concerns.indexOf(c);
+        if(i>-1) state.concerns.splice(i,1); else state.concerns.push(c);
+        state.concern=state.concerns[0]||null;
+      }
+      renderConcerns();refresh()
+    };box.appendChild(b);
   });
+  selectionLine();
 }
 // step 2
 function segs(id,key,vals){
@@ -91,12 +108,15 @@ function segs(id,key,vals){
 // step 3
 function renderDocs(){
   const box=$('#docs');box.innerHTML='';
-  const pool = state.cat==='skin' ? DOCS.filter(d=>d.id==='awen') : DOCS;
-  const ranked = pool.map(d=>({d,rec:d.match.includes(state.concern)})).sort((a,b)=>b.rec-a.rec);
+  const wants = state.online ? [state.concern] : state.concerns;
+  const ranked = DOCS.map(d=>{
+    const cover = wants.filter(c=>d.match.includes(c)).length;
+    return {d, cover, rec: cover===wants.length && wants.length>0};
+  }).sort((a,b)=>b.cover-a.cover);
   if(!state.doc && ranked[0]) state.doc=ranked[0].d.id;
   ranked.forEach(({d,rec})=>{
     const b=document.createElement('button');b.className='doc'+(state.doc===d.id?' on':'');
-    b.innerHTML=`<div class="portrait"><span>${d.init}</span></div><div><b>${d.name}</b><div class="meta">${d.spec}<br>${d.years} years · ${d.langs}<br>${d.intro}</div>${rec?'<span class="rec">Recommended for '+state.concern+'</span>':''}</div>`;
+    b.innerHTML=`<div class="portrait"><span>${d.init}</span></div><div><b>${d.name}</b><div class="meta">${d.spec}<br>${d.years?d.years+" years · ":""}${d.langs}<br>${d.intro}</div>${rec?'<span class="rec">Covers everything you picked</span>':''}</div>`;
     b.onclick=()=>{state.doc=d.id;state.date=null;state.time=null;renderDocs();refresh()};
     box.appendChild(b);
   });
@@ -107,7 +127,7 @@ let viewOffset=0;
 function renderCalendar(){
   const doc=DOCS.find(d=>d.id===state.doc);
   const step = state.online ? 15 : 30;
-  state.duration = state.online ? state.onlineLen : (DURATION[state.concern]||30);
+  state.duration = state.online ? state.onlineLen : Math.min(state.concerns.reduce((t,c)=>t+(DURATION[c]||30),0)||30, 180);
   const dates=nextDates(28);
   const grid=$('#days');grid.innerHTML='';
   ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>{const s=document.createElement('div');s.className='dow';s.textContent=d;grid.appendChild(s)});
@@ -139,10 +159,10 @@ function renderCalendar(){
 // step 5
 function renderSummary(){
   const doc=DOCS.find(d=>d.id===state.doc);
-  state.fee = state.online ? ONLINE_FEES[state.onlineLen] : (FEES[state.concern]||30);
+  state.fee = state.online ? ONLINE_FEES[state.onlineLen] : (state.concerns.reduce((t,c)=>t+(FEES[c]||30),0)||30);
   const d=new Date(state.date);
   $('#sum').innerHTML = `
-    <div class="row"><span>Service</span><span>${state.online?'Online · '+state.concern:CATS[state.cat].title+' · '+state.concern}</span></div>
+    <div class="row"><span>Service</span><span>${state.online?'Online · '+state.concern:(state.concerns.join(' + ')||state.concern)}</span></div>
     <div class="row"><span>Specialist</span><span>${doc.name}</span></div>
     <div class="row"><span>Date</span><span>${fmtDate(d)}</span></div>
     <div class="row"><span>Time</span><span>${state.time}</span></div>
@@ -157,7 +177,7 @@ function confirmBooking(){
   const name=$('#pname').value.trim(), email=$('#pemail').value.trim(), phone=$('#pphone').value.trim();
   if(!name||!(email||phone)){ toast('Add your name and one way to reach you.'); return; }
   const ref='ORA-'+hash(name+state.date+state.time).toString(36).toUpperCase().slice(0,6);
-  pushToPortal({id:'w'+ref, room:'c1', date:new Date(state.date).toISOString().slice(0,10), h:parseInt(state.time), who:name, what:(state.online?'Online · ':'')+(state.concern||'Consultation'), kind:'patient', status:'booked', fee:state.fee});
+  pushToPortal({id:'w'+ref, room:'c1', date:new Date(state.date).toISOString().slice(0,10), h:parseInt(state.time), who:name, what:(state.online?'Online · '+(state.concern||'Consultation'):(state.concerns.join(' + ')||'Consultation')), kind:'patient', status:'booked', fee:state.fee});
   $('.flow-body').innerHTML = `
     <div class="confirm">
       <div class="tick"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F3EFE8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div>
@@ -181,7 +201,7 @@ function confirmBooking(){
 
 // ---------- fast track ----------
 function fastTrack(){
-  state.fast=true; state.cat='dental'; state.concern='Emergency'; state.online=false; state.severity='Severe';
+  state.fast=true; state.cat='dental'; state.concern='Emergency'; state.concerns=['Emergency']; state.online=false; state.severity='Severe';
   const doc=DOCS.find(d=>d.id==='awen');
   const today=new Date(); const now=today.getHours()*60+today.getMinutes();
   let found=null;
@@ -221,6 +241,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   // deep links
   const cat=params.get('cat'); if(cat&&CATS[cat]){state.cat=cat;state.online=cat==='online';renderCats()}
+  const pc=params.get('concern'); if(pc){ if(state.online) state.concern=pc; else { state.concerns=[pc]; state.concern=pc; } renderConcerns(); }
   const concern=params.get('concern');
   if(concern==='cosmetic'){state.concern='Cosmetic dentistry';renderConcerns()}
   else if(concern&&state.cat&&CATS[state.cat].concerns.includes(concern)){state.concern=concern;renderConcerns()}

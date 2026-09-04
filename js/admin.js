@@ -1,6 +1,8 @@
 // Ora clinic portal — client-side prototype. State persists in this browser's
 // localStorage; the Supabase build replaces it with a real database and roles.
-const STAFF = ['awe.halasa71@gmail.com', 'hello@ora.clinic'];
+const STAFF = ['awen.halasa71@gmail.com', 'awe.halasa71@gmail.com', 'hello@ora.clinic'];
+const PASS_SHA256 = 'ea26f75222b790fc904d2c8150fa1914c9e1ff95c1eb0a5b0cc43434895da1a9';
+async function sha256(t){const b=await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const pad=n=>String(n).padStart(2,'0');
 const dkey=d=>d.toISOString().slice(0,10);
@@ -57,12 +59,13 @@ function gate(){
   if(u){ $('#gate').hidden=true; $('#portal').hidden=false; $('#whoami').textContent=u; render(); }
   else { $('#gate').hidden=false; $('#portal').hidden=true; }
 }
-$('#gGo').onclick=()=>{
+$('#gGo').onclick=async ()=>{
   const e=($('#gEmail').value||'').trim().toLowerCase();
-  if(STAFF.includes(e)){ localStorage.setItem('ora-admin-user',e); $('#gErr').hidden=true; gate(); }
+  const ok = STAFF.includes(e) && (await sha256($('#gPass').value||''))===PASS_SHA256;
+  if(ok){ localStorage.setItem('ora-admin-user',e); $('#gErr').hidden=true; gate(); }
   else $('#gErr').hidden=false;
 };
-$('#gEmail').addEventListener('keydown',ev=>{ if(ev.key==='Enter') $('#gGo').click(); });
+['gEmail','gPass'].forEach(id=>document.getElementById(id).addEventListener('keydown',ev=>{ if(ev.key==='Enter') $('#gGo').click(); }));
 $('#signOut').onclick=()=>{ localStorage.removeItem('ora-admin-user'); gate(); };
 
 // ---------- tabs ----------

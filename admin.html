@@ -19,9 +19,11 @@
     <p class="small">Reservations, the calendar, and partner requests. Staff only.</p>
     <div class="field" style="margin-top:22px"><label for="gEmail">Email</label>
       <input type="email" id="gEmail" placeholder="you@ora.clinic" autocomplete="email"></div>
+    <div class="field" style="margin-top:14px"><label for="gPass">Password</label>
+      <input type="password" id="gPass" placeholder="••••••••" autocomplete="current-password"></div>
     <button class="btn btn-primary btn-lg" id="gGo" style="width:100%;justify-content:center">Enter the portal</button>
-    <p class="small" id="gErr" style="color:var(--error);margin-top:12px" hidden>That email isn't on the staff list. Ask Dr. Halasa to add you.</p>
-    <p class="small" style="margin-top:18px">Prototype access check. Real sign-in with passwords and roles ships with the Supabase build.</p>
+    <p class="small" id="gErr" style="color:var(--error);margin-top:12px" hidden>Email or password isn't right. Ask Dr. Halasa if you should have access.</p>
+    <p class="small" style="margin-top:18px">Access is limited to clinic staff. Server-side accounts and roles arrive with the Supabase build.</p>
   </div>
 </div>
 

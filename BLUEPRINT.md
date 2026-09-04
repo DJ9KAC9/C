@@ -102,3 +102,8 @@ See `higgsfield-prompts.md`.
 - Online consultation repriced 20% below in-clinic: 15 min 16 JOD, 30 min 28 JOD.
 - Clinic portal is now a dashboard: Today, Calendar, Bookings (search/cancel), Partner requests (approve→calendar+settlement), Money (collected today/7-days, owed to partners, transaction ledger with mark-paid / mark-transferred). Site bookings and partner requests on the same browser feed straight into it.
 - Still browser-local by design. The real backend (Supabase Postgres + auth + HyperPay/PayTabs for actual money movement) is the next build; this dashboard is its exact spec.
+
+### Phase 1.5
+- Admin gate: email + password (SHA-256-checked client-side; plaintext never in source). Staff emails: Awen.halasa71@gmail.com (corrected spelling; old spelling kept as alias) and hello@ora.clinic. /admin route added.
+- Booking flow: multiple services per visit, mixable across Dental and Skin Lounge. Duration and fee are summed (visit capped at 180 min), doctor ranking prefers whoever covers every pick, summary and portal records list all services.
+- Honest limit: the password gate deters casual access only — real security requires server-side auth (Supabase), since any client-side check can be bypassed by reading the page source.
