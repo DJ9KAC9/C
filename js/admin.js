@@ -10,46 +10,13 @@ const fmt=d=>d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'l
 function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
 
 // ---------- store ----------
-const DB_KEY='ora-admin-v1';
+const DB_KEY='ora-admin-v2'; // v2: production store, starts empty
 function load(){ try{return JSON.parse(localStorage.getItem(DB_KEY))||null}catch(e){return null} }
 function save(db){ try{localStorage.setItem(DB_KEY, JSON.stringify(db))}catch(e){} }
 
-function seed(){
-  const names=['Faris N.','Dana K.','Yara S.','Omar T.','Lina M.','Hala R.','Sami D.','Noor A.','Rami H.','Maya B.'];
-  const cases=['Check-up','Cleaning','Root canal','Whitening','Veneer fit','Filling','Emergency','Kids — first visit','Implant review','Gum treatment'];
-  const db={appts:[], reqs:[], blocks:[], txns:[]};
-  const today=new Date(); today.setHours(0,0,0,0);
-  for(let i=0;i<14;i++){
-    const d=new Date(today); d.setDate(today.getDate()+i); const k=dkey(d);
-    if(d.getDay()===5) continue; // Friday: no patient list, partner day
-    for(let h=9;h<19;h++){
-      const r=hash('c1'+k+h)%100;
-      if(r<45) db.appts.push({id:'a'+k+h+'1', room:'c1', date:k, h, who:names[r%10], what:cases[r%10], kind:'patient', status:'booked'});
-      const r2=hash('c2'+k+h)%100;
-      if(r2<30) db.appts.push({id:'a'+k+h+'2', room:'c2', date:k, h, who:names[(r2+3)%10], what:cases[(r2+5)%10], kind:'patient', status:'booked'});
-    }
-  }
-  // pending partner requests
-  const rq=(days,room,h1,h2,doc,caseT,model)=>{const d=new Date(today);d.setDate(today.getDate()+days);
-    return {id:'r'+days+room+h1, room, date:dkey(d), h1, h2, doc, caseT, model, status:'pending'}};
-  db.reqs.push(rq(1,'c1',19,22,'Dr. Sara Qudah','Restorative','Hourly · 3h × 25 JOD'));
-  db.reqs.push(rq(2,'c2',20,22,'Dr. Khaled Nims','Endodontics','Share · 35% of ~300 JOD'));
-  db.reqs.push(rq(3,'c1',9,13,'Dr. Rula Haddadin','Cosmetic / veneers','Hourly · 4h × 25 JOD (Friday)'));
-  // seed transactions from today's and yesterday's appointments
-  const fees={'Check-up':25,'Cleaning':45,'Root canal':120,'Whitening':180,'Veneer fit':60,'Filling':35,'Emergency':40,'Kids — first visit':25,'Implant review':30,'Gum treatment':35,'Booked by reception':30};
-  db.appts.slice(0,40).forEach((a,i)=>{
-    const d=new Date(today); d.setDate(today.getDate()-(i%7)); // demo payments across the past week
-    db.txns.push({id:'t'+a.id, date:dkey(d), who:a.who, what:a.what, amount:fees[a.what]||30, kind:'patient', status: hash(a.id)%4? 'paid':'pending'});
-  });
-  return db;
-}
-let db = load();
-if(!db){ db=seed(); db.seeded=true; }
-else if(!db.seeded){ // store was created by the public site before the portal first opened: merge the demo seed in
-  const s0=seed();
-  db={appts:[...s0.appts, ...(db.appts||[])], reqs:[...s0.reqs, ...(db.reqs||[])], blocks:(db.blocks||[]), txns:[...s0.txns, ...(db.txns||[])], seeded:true};
-}
-if(!db.txns) db.txns=[];
+function seed(){ return {appts:[], reqs:[], blocks:[], txns:[], seeded:true}; }
+let db = load() || seed();
+db.txns=db.txns||[]; db.appts=db.appts||[]; db.reqs=db.reqs||[]; db.blocks=db.blocks||[]; db.seeded=true;
 save(db);
 
 // ---------- gate ----------
@@ -139,9 +106,9 @@ function renderReqs(){
   $$('[data-ok]').forEach(b=>b.onclick=()=>{
     const r=db.reqs.find(x=>x.id===b.dataset.ok); r.status='approved';
     for(let h=r.h1; h<r.h2; h++) db.appts.push({id:'p'+r.id+h, room:r.room, date:r.date, h, who:r.doc, what:r.caseT, kind:'partner', doc:r.doc, status:'booked'});
-    const hrs=r.h2-r.h1, hourly=/Hourly/.test(r.model), rate=(r.room==='c1'||r.h1>=19)?25:20;
-    const amt = hourly ? Math.max(hrs,2)*rate : Math.max(Math.round((parseInt(r.model.replace(/[^0-9]/g,''))||300)*0.35), 25);
-    db.txns.push({id:'ts'+r.id, date:r.date, who:r.doc, what:(hourly?'Chair hire · ':'35% share · ')+r.caseT, amount:amt, kind:'partner', status:'pending'});
+    const hrs=r.h2-r.h1, monthly=/Monthly/.test(r.model);
+    const amt = monthly ? 600 : Math.max(Math.round((parseInt(r.model.replace(/[^0-9]/g,''))||300)*0.40), 25);
+    db.txns.push({id:'ts'+r.id, date:r.date, who:r.doc, what:(monthly?'Monthly residency · ':'40% share · ')+r.caseT, amount:amt, kind:'partner', status:'pending'});
     save(db); render(); toast('Approved — session placed on the calendar.');
   });
   $$('[data-no]').forEach(b=>b.onclick=()=>{ const r=db.reqs.find(x=>x.id===b.dataset.no); r.status='declined'; save(db); render(); });

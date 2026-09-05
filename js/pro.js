@@ -1,5 +1,5 @@
 
-function pushReqToPortal(req){try{const k='ora-admin-v1';const db=JSON.parse(localStorage.getItem(k))||{appts:[],reqs:[],blocks:[],txns:[]};db.reqs.push(req);localStorage.setItem(k,JSON.stringify(db));}catch(e){}}
+function pushReqToPortal(req){try{const k='ora-admin-v2';const db=JSON.parse(localStorage.getItem(k))||{appts:[],reqs:[],blocks:[],txns:[]};db.reqs.push(req);localStorage.setItem(k,JSON.stringify(db));}catch(e){}}
 // Practice at Ora — partner chair booking prototype.
 // Availability is deterministic per room+day so it behaves like a live calendar.
 // Rules: Clinic 1 (Dr. Halasa's room) = Sat–Thu 19:00–24:00 + all day Friday (09:00–24:00).
@@ -15,7 +15,7 @@ const ROOMS = {
         hours(d){ return [9,24]; },
         rate(h,d){ return (d.getDay()===5 || h>=19) ? 25 : 20; } }
 };
-const SHARE = 0.35, SHARE_MIN = 25, HOURLY_MIN_H = 2;
+const SHARE = 0.40, SHARE_MIN = 25;
 const CASES = ['Restorative','Endodontics','Prosthodontics','Extraction / surgery','Orthodontics','Pediatric','Cosmetic / veneers','Other'];
 
 const state = { room:null, date:null, hours:[], model:null, caseType:null, caseFee:0, addons:{assist:false, scan:false} };
@@ -79,7 +79,7 @@ function renderHours(){
   }).join('');
   note.textContent = state.room==='c1' && state.date.getDay()!==5
     ? 'Clinic 1 opens to partners at 19:00 on working days.'
-    : 'Select consecutive hours. Two-hour minimum applies on the hourly model.';
+    : 'Select consecutive hours for this session.';
   $$('#hours .slot[data-h]').forEach(el=>el.onclick=()=>{
     const h = +el.dataset.h;
     toggleHour(h, slots); renderHours(); update();
@@ -109,13 +109,13 @@ function renderCase(){
     $$('#caseTypes .pill').forEach(x=>x.classList.toggle('on',x===el)); update();
   });
   $('#payModels').innerHTML = `
-    <button class="opt" data-model="share" type="button"><b>All-inclusive share</b><span>Ora takes 35% of case fees. Materials, machinery, sterilization, and reception included. Minimum 25 JOD.</span></button>
-    <button class="opt" data-model="hourly" type="button"><b>Hourly chair</b><span>Bring your own materials, keep 100% of your fees. 20 JOD/h daytime, 25 JOD/h evenings &amp; Fridays. Two-hour minimum.</span></button>`;
+    <button class="opt" data-model="share" type="button"><b>Revenue share</b><span>The clinic takes 40% of case fees. Materials, machinery, sterilization, and reception included. Minimum 25 JOD.</span></button>
+    <button class="opt" data-model="monthly" type="button"><b>Hourly chair</b><span>Bring your own materials, keep 100% of your fees. 20 JOD/h daytime, 25 JOD/h evenings &amp; Fridays. Two-hour minimum.</span></button>`;
   $$('#payModels .opt').forEach(el=>el.onclick=()=>{
     state.model=el.dataset.model;
     $$('#payModels .opt').forEach(x=>x.classList.toggle('on',x===el));
     $('#shareFields').classList.toggle('show', state.model==='share');
-    $('#hourFields').classList.toggle('show', state.model==='hourly'); update();
+    $('#hourFields').classList.toggle('show', state.model==='monthly'); update();
   });
   $('#caseFee').addEventListener('input', e=>{ state.caseFee = parseFloat(e.target.value)||0; update(); });
   $$('#hourFields .pill').forEach(el=>el.onclick=()=>{
@@ -134,24 +134,22 @@ function estimate(){
   if(state.caseType) rows.push(['Case', state.caseType]);
   let total=0, note='';
   if(state.model==='share'){
-    rows.push(['Model','All-inclusive · 35% to Ora']);
+    rows.push(['Model','Revenue share · 40% to the clinic']);
     if(state.caseFee>0){
       const cut = Math.max(state.caseFee*SHARE, SHARE_MIN);
       rows.push(['Expected case fees', state.caseFee.toFixed(0)+' JOD']);
-      rows.push(['Ora share (35%)', cut.toFixed(0)+' JOD']);
+      rows.push(['Clinic share (40%)', cut.toFixed(0)+' JOD']);
       rows.push(['You keep', (state.caseFee-cut).toFixed(0)+' JOD']);
       total = cut; note = 'Settled the same evening from the patient payment. Includes materials from our stock.';
     } else { total = SHARE_MIN; note='Enter expected case fees to see your split. 25 JOD minimum applies.'; }
   } else {
-    const billed = Math.max(hrs, HOURLY_MIN_H);
-    const rate = r.rate(Math.min(...state.hours), d);
-    rows.push(['Model','Hourly · own materials']);
-    rows.push(['Chair', `${billed} h × ${rate} JOD`]);
-    total = billed*rate;
-    if(billed>hrs) note='Billed at the two-hour minimum. ';
-    if(state.addons.assist){ rows.push(['Assistant', `${billed} h × 8 JOD`]); total+=billed*8; }
+    rows.push(['Model','Monthly residency']);
+    rows.push(['Residency', '600 JOD / month']);
+    rows.push(['This session', `${hrs} h · included in your month`]);
+    total = 0;
+    if(state.addons.assist){ rows.push(['Assistant', `${hrs} h × 8 JOD`]); total+=hrs*8; }
     if(state.addons.scan){ rows.push(['Intraoral scan','15 JOD']); total+=15; }
-    note += 'Paid at check-in. X-rays billed as taken, 3 JOD each.';
+    note = 'Residency is invoiced 600 JOD at the start of each month. Add-ons are paid at check-in; X-rays billed as taken, 3 JOD each.';
   }
   return {rows, total, note};
 }
@@ -159,7 +157,7 @@ function estimate(){
 function update(){
   const e = estimate();
   $('#estRows').innerHTML = e ? e.rows.map(([k,v])=>`<div class="row"><span>${k}</span><span>${v}</span></div>`).join('') : '';
-  $('#estTotal').textContent = e ? (state.model==='share' ? e.total.toFixed(0)+' JOD to Ora' : e.total.toFixed(0)+' JOD') : '—';
+  $('#estTotal').textContent = e ? (state.model==='share' ? e.total.toFixed(0)+' JOD to the clinic' : (e.total>0 ? e.total.toFixed(0)+' JOD add-ons' : 'Covered by residency')) : '—';
   $('#estNote').textContent = e ? e.note : 'Pick a room and hours to see your estimate.';
   $('#submit').disabled = !(e && state.caseType && $('#dName').value.trim() && $('#dLic').value.trim() && $('#dPhone').value.trim() && $('#agree').checked && (state.model!=='share' || state.caseFee>0));
 }
@@ -169,7 +167,7 @@ function wireSubmit(){
   ['dName','dLic','dPhone','dSpec'].forEach(id=>$('#'+id).addEventListener('input',update));
   $('#agree').addEventListener('change',update);
   $('#submit').onclick = ()=>{
-    pushReqToPortal({id:'PR-'+Date.now().toString(36).toUpperCase(), room:state.room, date:state.date.toISOString().slice(0,10), h1:Math.min(...state.hours), h2:Math.max(...state.hours)+1, doc:$('#dName').value.trim(), caseT:state.caseType, model: state.model==='share' ? ('Share · 35% of ~'+(state.caseFee||300)+' JOD') : 'Hourly', status:'pending'});
+    pushReqToPortal({id:'PR-'+Date.now().toString(36).toUpperCase(), room:state.room, date:state.date.toISOString().slice(0,10), h1:Math.min(...state.hours), h2:Math.max(...state.hours)+1, doc:$('#dName').value.trim(), caseT:state.caseType, model: state.model==='share' ? ('Share · 40% of ~'+(state.caseFee||300)+' JOD') : 'Monthly · 600 JOD', status:'pending'});
     const e = estimate(); if(!e) return;
     document.querySelector('.pro-flow').hidden = true;
     const done = $('#proDone'); done.hidden = false;

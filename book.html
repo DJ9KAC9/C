@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Book — Ora</title>
+<title>Book — Dr. Awen Halasa Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..500,0..100;1,9..144,300..500,0..100&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F4A3E'/%3E%3Ctext x='30' y='45' font-family='Georgia,serif' font-size='36' fill='%23F3EFE8' text-anchor='middle'%3EO%3C/text%3E%3Ctext x='47' y='45' font-family='Georgia,serif' font-size='36' fill='%23A98A5E'%3E.%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="assets/brand/favicon-ah.png">
 </head>
 <body class="day">
 <div class="flow">
   <div>
     <div class="flow-top">
-      <a class="brand" href="index.html">Ora<span>.</span></a>
+      <a class="brand brand-ah" href="index.html"><img src="assets/brand/ah-mark-sm.png" alt="AH mark" class="ah-logo"><span class="brand-txt"><b>Dr. Awen Halasa</b><i>Dental &amp; Aesthetic Center</i></span></a>
       <div style="display:flex;gap:16px;align-items:center"><button class="lang-toggle" id="langToggle" type="button">عربي</button><a class="link small" href="index.html" data-i18n="leave">Leave booking</a></div>
     </div>
     <div class="progress"><i style="width:20%"></i></div>
@@ -82,7 +82,15 @@
           <div class="field"><label for="pname">Your name</label><input type="text" id="pname" placeholder="Full name" autocomplete="name"></div>
           <div class="field"><label for="pemail">Email</label><input type="email" id="pemail" placeholder="you@example.com" autocomplete="email"></div>
           <div class="field"><label for="pphone">Phone</label><input type="tel" id="pphone" placeholder="+962 7…" autocomplete="tel"><span class="hint">Reminders go by WhatsApp and email. Either one is enough.</span></div>
-          <div class="field"><label>Payment</label><div class="upload" style="cursor:default;text-align:left">Card, Apple Pay, or CliQ. Payment is simulated in this preview build.</div></div>
+          <div class="field"><label>Payment — CliQ</label>
+  <div class="cliq" id="cliqBox">
+    <p>Send <b id="cliqAmt">—</b> by CliQ to alias <b>Own99</b> · Etihad Bank, then attach the transfer screenshot. Reception verifies it and your booking is confirmed.</p>
+    <label class="upload" for="payShot" id="payShotLbl">Attach payment screenshot</label>
+    <input type="file" id="payShot" accept="image/*" hidden>
+    <img id="payPrev" alt="Payment screenshot" hidden>
+  </div>
+  <p class="small" id="examPayNote" hidden>Services quoted at examination are paid at the clinic.</p>
+</div>
         </div>
         <div class="sheet" id="sum"></div>
       </div>

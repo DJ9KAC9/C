@@ -107,3 +107,13 @@ See `higgsfield-prompts.md`.
 - Admin gate: email + password (SHA-256-checked client-side; plaintext never in source). Staff emails: Awen.halasa71@gmail.com (corrected spelling; old spelling kept as alias) and hello@ora.clinic. /admin route added.
 - Booking flow: multiple services per visit, mixable across Dental and Skin Lounge. Duration and fee are summed (visit capped at 180 min), doctor ranking prefers whoever covers every pick, summary and portal records list all services.
 - Honest limit: the password gate deters casual access only — real security requires server-side auth (Supabase), since any client-side check can be bypassed by reading the page source.
+
+### Phase 2.0 — rebrand & real commerce
+- Renamed: Dr. Awen Halasa Dental & Aesthetic Center (Arabic: مركز الدكتور عون الهلسة لطب الأسنان والتجميل). Gold AH tooth mark extracted to transparency (saturation-keyed), used in nav + favicon.
+- Payment: CliQ to alias Own99 · Etihad Bank; patient must attach the transfer screenshot before confirming (fee>0); portal Money shows the payment as pending until reception verifies. Exam-quoted services pay at the clinic.
+- Prices set per Dr. Halasa: cleaning 40, whitening 150, crown 160, veneers 160, root canal 80, emergency/pain/check-up 30, children 25; braces 800–1500 & full-mouth & facial treatment & laser & implants → quoted at examination. Skin: consult 20, HydroFacial 40, anti-aging 120, fillers 150, mesotherapy 120, Botox 150, GanaFill 400, Amber 120, Adipozone 100, Hydro Max 100, boosters 100. Online consult stays 16/28.
+- Partners: revenue share now 60% dentist / 40% clinic (min 25), hourly replaced by Monthly residency 600 JOD/month.
+- Contact: Drawenhalasa@gmail.com everywhere, phone tap-to-dial + WhatsApp (wa.me) links.
+- Doctors: Awen + Rana Odeh (DDS · MFD RCSI · MSc Ortho UoJ) only.
+- Admin store reset to production (v2 key, starts empty; old demo data ignored).
+- Lounge page: three real room photos. Before/after cases: linked to Instagram rather than embedding low-res screenshots — send original case photos for a proper results gallery.

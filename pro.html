@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Practice at Ora — chair &amp; room booking for dentists</title>
-<meta name="description" content="Book a fully equipped operatory at Ora in Madaba by the hour or on a revenue share. Two rooms, evening and Friday access, sterilization and reception included.">
+<title>Practice with us — Dr. Awen Halasa Center</title>
+<meta name="description" content="Book a fully equipped operatory in Madaba on a revenue share or monthly residency. Two rooms, evening and Friday access, sterilization and reception included.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..500,0..100;1,9..144,300..500,0..100&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F4A3E'/%3E%3Ctext x='30' y='45' font-family='Georgia,serif' font-size='36' fill='%23F3EFE8' text-anchor='middle'%3EO%3C/text%3E%3Ctext x='47' y='45' font-family='Georgia,serif' font-size='36' fill='%23A98A5E'%3E.%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="assets/brand/favicon-ah.png">
 </head>
 <body>
 
 <nav class="nav">
-  <a class="brand" href="index.html">Ora<span>.</span></a>
+  <a class="brand brand-ah" href="index.html"><img src="assets/brand/ah-mark-sm.png" alt="AH mark" class="ah-logo"><span class="brand-txt"><b>Dr. Awen Halasa</b><i>Dental &amp; Aesthetic Center</i></span></a>
   <ul>
     <li><a href="index.html#care">Care</a></li>
     <li><a href="lounge.html">The Lounge</a></li>
@@ -29,7 +29,7 @@
 <header class="hero night" style="min-height:78vh">
   <div class="light"></div>
   <div class="wrap hero-inner">
-    <p class="cap">Practice at Ora</p>
+    <p class="cap">Practice with us</p>
     <h1 style="max-width:14ch">Your patients. Our rooms.</h1>
     <p class="lede">Two fully equipped operatories in Madaba, bookable by licensed dentists who don't have a clinic of their own — or need a second chair for a day. Sterilization, reception, and machinery included. You treat; we handle the room.</p>
     <div class="hero-actions">
@@ -71,13 +71,13 @@
   <div class="wrap">
     <div class="section-head">
       <h2>Two ways to pay. Pick per booking.</h2>
-      <p class="lede">Choose the model that fits the case. Big restorative day with lots of materials? Take the share. Quick cases with your own composites? Pay by the hour.</p>
+      <p class="lede">Choose what fits how you work. Occasional cases? Take the revenue share. Practising here regularly? The monthly residency quickly pays for itself.</p>
     </div>
     <div class="models">
       <div class="model">
-        <p class="cap">All-inclusive share</p>
-        <div class="price">35<span>% of case fees</span></div>
-        <p>You keep 65% of what your patient pays. Ora provides the room, machinery, standard materials and consumables, sterilization, reception, and payment handling. Minimum 25 JOD per booking.</p>
+        <p class="cap">Revenue share</p>
+        <div class="price">40<span>% of case fees to the clinic</span></div>
+        <p>You keep 60% of what your patient pays. The clinic provides the room, machinery, standard materials and consumables, sterilization, reception, and payment handling. Minimum 25 JOD per booking.</p>
         <ul class="inc">
           <li>Chair, machinery, and digital X-ray</li>
           <li>Standard materials and consumables from our stock</li>
@@ -86,14 +86,14 @@
         </ul>
       </div>
       <div class="model">
-        <p class="cap">Hourly chair</p>
+        <p class="cap">Monthly residency</p>
         <div class="price">20<span>JOD / hour</span></div>
-        <p>Bring your own materials and keep 100% of your fees. 20 JOD/hour daytime in Clinic 2; 25 JOD/hour for evening sessions and Fridays in Clinic 1. Two-hour minimum.</p>
+        <p>A fixed monthly rate, your own materials, 100% of your fees. Book any available hours in both rooms — Clinic 2 daytime, Clinic 1 evenings and Fridays.</p>
         <ul class="inc">
           <li>Chair, machinery, suction, and light</li>
           <li>Sterilization of your instrument sets</li>
           <li>Reception and waiting area for your patients</li>
-          <li>Add-ons: assistant +8 JOD/h · X-ray 3 JOD/exposure · intraoral scan 15 JOD/case</li>
+          <li>Add-ons: assistant +8 JOD/h · X-ray 3 JOD/exposure · intraoral scan 15 JOD/case — both models</li>
         </ul>
       </div>
     </div>
@@ -179,7 +179,7 @@
           <div class="total"><span>Estimated total</span><span id="estTotal">—</span></div>
           <p class="pay-note" id="estNote">Pick a room and hours to see your estimate.</p>
           <button class="btn btn-primary btn-lg" id="submit" style="width:100%;justify-content:center;margin-top:18px" disabled>Request this session</button>
-          <p class="pay-note">Nothing is charged now. We confirm on WhatsApp within two hours; hourly sessions are paid at check-in, shares are settled the same evening.</p>
+          <p class="pay-note">Nothing is charged now. We confirm on WhatsApp within two hours; shares are settled the same evening, and monthly residency is invoiced at the start of each month.</p>
         </div>
       </aside>
     </div>
@@ -188,10 +188,10 @@
     <div class="pro-done" id="proDone" hidden>
       <div class="tick"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="#F3EFE8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2>Request sent.</h2>
-      <p class="lede" id="doneText">We'll confirm on WhatsApp within two hours. First time at Ora? Bring your JDA card to check-in — verification takes five minutes, once.</p>
+      <p class="lede" id="doneText">We'll confirm on WhatsApp within two hours. First time with us? Bring your JDA card to check-in — verification takes five minutes, once.</p>
       <div class="actions-row">
         <a class="btn btn-primary" href="pro.html">Book another session</a>
-        <a class="btn btn-ghost" href="index.html">Back to Ora</a>
+        <a class="btn btn-ghost" href="index.html">Back to the site</a>
       </div>
     </div>
   </div>
@@ -202,21 +202,21 @@
     <div class="span-4"><p class="cap">House rules</p><h2>Short, and non-negotiable.</h2></div>
     <div class="span-7 start-6">
       <div class="statement"><span class="k">Sterility</span><div><h3>Every set autoclaved, every surface reset.</h3><p>Instrument sets are sealed and dated. Rooms are turned over between dentists by our team, never rushed between patients.</p></div></div>
-      <div class="statement"><span class="k">Materials</span><div><h3>Everything from our cabinet is logged.</h3><p>On the share model, take what the case needs. On hourly, our stock is available at list price if you run short — logged at the chair, added at check-out.</p></div></div>
-      <div class="statement"><span class="k">Your patients</span><div><h3>They're yours, before and after.</h3><p>Ora doesn't market to your patients or keep their clinical records. You bring them, you treat them, you follow up with them.</p></div></div>
-      <div class="statement"><span class="k">Cancellation</span><div><h3>Free until 24 hours before.</h3><p>Inside 24 hours, the two-hour minimum (or the 25 JOD share minimum) applies. Emergencies happen; talk to us.</p></div></div>
+      <div class="statement"><span class="k">Materials</span><div><h3>Everything from our cabinet is logged.</h3><p>On the share model, take what the case needs. On monthly residency, our stock is available at list price if you run short — logged at the chair, added at check-out.</p></div></div>
+      <div class="statement"><span class="k">Your patients</span><div><h3>They're yours, before and after.</h3><p>We don't market to your patients or keep their clinical records. You bring them, you treat them, you follow up with them.</p></div></div>
+      <div class="statement"><span class="k">Cancellation</span><div><h3>Free until 24 hours before.</h3><p>Inside 24 hours, the 25 JOD share minimum applies. Emergencies happen; talk to us.</p></div></div>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="foot">
-    <div><a class="brand" href="index.html">Ora<span>.</span></a><p class="small" style="margin-top:14px;max-width:32ch">Dental clinic and skin lounge. Madaba, Jordan. Care, considered.</p></div>
+    <div><a class="brand brand-ah" href="index.html"><img src="assets/brand/ah-mark-sm.png" alt="AH mark" class="ah-logo"><span class="brand-txt"><b>Dr. Awen Halasa</b><i>Dental &amp; Aesthetic Center</i></span></a><p class="small" style="margin-top:14px;max-width:32ch">Dental clinic and skin lounge. Madaba, Jordan. Care, considered.</p></div>
     <div><h4>Care</h4><ul><li><a href="book.html?cat=dental">Dental</a></li><li><a href="lounge.html">Skin Lounge</a></li><li><a href="consult.html">Online consultation</a></li></ul></div>
     <div><h4>For dentists</h4><ul><li><a href="#pricing">Pricing</a></li><li><a href="#request">Book a room</a></li><li><a href="#rules">House rules</a></li></ul></div>
-    <div><h4>Contact</h4><ul><li>079 222 2427</li><li>hello@ora.clinic</li><li>Sat–Thu 9:00–20:00 · partner hours to midnight</li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="tel:+962792222427">079 222 2427</a> · <a href="https://wa.me/962792222427" target="_blank" rel="noopener">WhatsApp</a> · <a href="mailto:Drawenhalasa@gmail.com">Drawenhalasa@gmail.com</a></li><li>Drawenhalasa@gmail.com</li><li>Sat–Thu 9:00–20:00 · partner hours to midnight</li></ul></div>
   </div>
-  <div class="foot-bottom"><span>© 2026 Ora Clinic. Preview build — availability simulated.</span><span><a href="admin.html">Clinic portal</a> · Privacy · Terms · Partner agreement</span></div>
+  <div class="foot-bottom"><span>© 2026 Dr. Awen Halasa Dental & Aesthetic Center.</span><span><a href="admin.html">Clinic portal</a> · Privacy · Terms · Partner agreement</span></div>
 </footer>
 
 <div class="toast" id="toast"></div>

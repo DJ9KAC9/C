@@ -3,18 +3,20 @@
 
 const CATS = {
   dental:{ title:'Dental', concerns:['Tooth pain','Emergency','General check-up','Teeth cleaning','Whitening','Braces / orthodontics','Dental implants','Veneers','Crowns & bridges','Full-mouth rehabilitation','Cosmetic dentistry','Gum issues','Root canal',"Children's dentistry",'Something else'] },
-  skin:{ title:'Skin Lounge', concerns:['Skin consultation','HydroFacial','Facial treatment','Botox','Dermal fillers','Profhilo','Mesotherapy','Acne concerns','Anti-aging','Skin rejuvenation','Laser treatment','Something else'] },
+  skin:{ title:'Skin Lounge', concerns:['Skin consultation','HydroFacial','Facial treatment','Botox','Dermal fillers','Profhilo','Mesotherapy','GanaFill bio-stimulator','Amber injection','Adipozone','Hydro Max','Skin booster','Acne concerns','Anti-aging','Skin rejuvenation','Laser treatment','Something else'] },
   online:{ title:'Online consultation', concerns:['Dental consultation','Follow-up consultation','Skin consultation','General advisory'] }
 };
 
 const DOCS = [
-  {id:'awen', name:'Dr. Awen Halasa', init:'AH', spec:'Cosmetic dentistry & facial aesthetics', years:0, langs:'Arabic, English', intro:'DDS (UoJ), MFD RCSI & RCSE, PGDip Aesthetic Dentistry (Leeds). Plans smiles with digital scans so you see the result first.', days:[0,1,2,3,4], hours:[9,18], match:['Whitening','Veneers','Cosmetic dentistry','Dental implants','Crowns & bridges','Full-mouth rehabilitation','Root canal','Tooth pain','Emergency','Gum issues','Teeth cleaning','General check-up','Dental consultation','Follow-up consultation','Botox','Dermal fillers','Profhilo','Mesotherapy','HydroFacial','Skin consultation','Facial treatment','Skin rejuvenation','Anti-aging','General advisory','Something else']},
-  {id:'rana', name:'Dr. Rana Odeh', init:'RO', spec:'Orthodontics', years:0, langs:'Arabic, English', intro:'MSc in Orthodontics, University of Jordan. Braces and aligners, planned on digital scans.', days:[0,1,2,3,4,6], hours:[9,18], match:['Braces / orthodontics',"Children's dentistry",'General check-up','Teeth cleaning','Dental consultation','Follow-up consultation']}
+  {id:'awen', name:'Dr. Awen Halasa', init:'AH', spec:'Cosmetic dentistry & facial aesthetics', years:0, langs:'Arabic, English', intro:'DDS (UoJ), MFD RCSI & RCSE, PGDip Aesthetic Dentistry (Leeds). Plans smiles with digital scans so you see the result first.', days:[0,1,2,3,4], hours:[9,18], match:['Whitening','Veneers','Cosmetic dentistry','Dental implants','Crowns & bridges','Full-mouth rehabilitation','Root canal','Tooth pain','Emergency','Gum issues','Teeth cleaning','General check-up','Dental consultation','Follow-up consultation','Botox','Dermal fillers','Profhilo','Mesotherapy','GanaFill bio-stimulator','Amber injection','Adipozone','Hydro Max','Skin booster','HydroFacial','Skin consultation','Facial treatment','Skin rejuvenation','Anti-aging','General advisory','Something else']},
+  {id:'rana', name:'Dr. Rana Odeh', init:'RO', spec:'Orthodontics', years:0, langs:'Arabic, English', intro:'DDS · MFD RCSI · MSc Orthodontics (University of Jordan). Braces and aligners, planned on digital scans.', days:[0,1,2,3,4,6], hours:[9,18], match:['Braces / orthodontics',"Children's dentistry",'General check-up','Teeth cleaning','Dental consultation','Follow-up consultation']}
 ];
 
-const DURATION = {'Emergency':30,'Tooth pain':30,'General check-up':30,'Teeth cleaning':45,'Whitening':60,'Braces / orthodontics':45,'Dental implants':60,'Veneers':60,'Cosmetic dentistry':45,'Gum issues':30,'Root canal':75,"Children's dentistry":30,'Skin consultation':30,'Facial treatment':60,'Acne concerns':30,'Anti-aging':45,'Skin rejuvenation':60,'Laser treatment':45,'Something else':30,'Crowns & bridges':60,'Full-mouth rehabilitation':60,'HydroFacial':60,'Botox':30,'Dermal fillers':45,'Profhilo':30,'Mesotherapy':45};
-const FEES = {'Emergency':40,'Tooth pain':30,'General check-up':25,'Teeth cleaning':45,'Whitening':180,'Braces / orthodontics':40,'Dental implants':60,'Veneers':60,'Cosmetic dentistry':40,'Gum issues':35,'Root canal':120,"Children's dentistry":25,'Skin consultation':35,'Facial treatment':90,'Acne concerns':35,'Anti-aging':60,'Skin rejuvenation':110,'Laser treatment':95,'Something else':30,'Crowns & bridges':50,'Full-mouth rehabilitation':60,'HydroFacial':85,'Botox':120,'Dermal fillers':150,'Profhilo':160,'Mesotherapy':90};
+const DURATION = {'Emergency':30,'Tooth pain':30,'General check-up':30,'Teeth cleaning':45,'Whitening':60,'Braces / orthodontics':45,'Dental implants':60,'Veneers':60,'Cosmetic dentistry':45,'Gum issues':30,'Root canal':75,"Children's dentistry":30,'Skin consultation':30,'Facial treatment':60,'Acne concerns':30,'Anti-aging':45,'Skin rejuvenation':60,'Laser treatment':45,'Something else':30,'Crowns & bridges':60,'Full-mouth rehabilitation':60,'HydroFacial':60,'Botox':30,'Dermal fillers':45,'Profhilo':30,'Mesotherapy':45,'GanaFill bio-stimulator':45,'Amber injection':30,'Adipozone':30,'Hydro Max':45,'Skin booster':30};
+const FEES = {'Emergency':30,'Tooth pain':30,'General check-up':30,'Teeth cleaning':40,'Whitening':150,'Braces / orthodontics':40,'Dental implants':60,'Veneers':160,'Cosmetic dentistry':40,'Gum issues':35,'Root canal':80,"Children's dentistry":25,'Skin consultation':20,'Facial treatment':90,'Acne concerns':35,'Anti-aging':120,'Skin rejuvenation':110,'Laser treatment':95,'Something else':30,'Crowns & bridges':160,'Full-mouth rehabilitation':60,'HydroFacial':40,'Botox':150,'Dermal fillers':150,'Profhilo':160,'Mesotherapy':120,'GanaFill bio-stimulator':400,'Amber injection':120,'Adipozone':100,'Hydro Max':100,'Skin booster':100};
 const ONLINE_FEES = {15:16, 30:28}; // 20% below in-clinic
+const ON_EXAM = new Set(['Braces / orthodontics','Full-mouth rehabilitation','Facial treatment','Laser treatment','Dental implants']);
+const EXAM_NOTE = {'Braces / orthodontics':'braces quoted 800–1500 JOD at examination'};
 
 const state = { cat:null, concern:null, concerns:[], severity:null, onset:null, note:'', files:0, doc:null, date:null, time:null, duration:30, fee:0, fast:false, online:false, onlineLen:15 };
 const params = new URLSearchParams(location.search);
@@ -47,10 +49,10 @@ function show(i){
   $('.progress i').style.width = ((i+1)/STEPS.length*100)+'%';
   $('#back').style.visibility = i===0?'hidden':'visible';
   $('.emg').style.display = i===0?'':'none';
-  $('#next').textContent = i===STEPS.length-1 ? (state.online?'Pay and confirm':'Pay and confirm') : 'Continue';
+  $('#next').textContent = i===STEPS.length-1 ? (state.fee>0?"I've paid — confirm booking":'Confirm booking') : 'Continue';
   $('#next').disabled = !canContinue();
   window.scrollTo({top:0,behavior:'smooth'});
-  if(i===2) renderDocs(); if(i===3) renderCalendar(); if(i===4) renderSummary();
+  if(i===2) renderDocs(); if(i===3) renderCalendar(); if(i===4){ renderSummary(); wireCliq(); refresh(); }
 }
 function canContinue(){
   switch(STEPS[cur]){
@@ -58,7 +60,7 @@ function canContinue(){
     case 'describe': return true;
     case 'doc': return !!state.doc;
     case 'time': return !!(state.date&&state.time);
-    case 'confirm': return true;
+    case 'confirm': return state.fee>0 ? !!state.payProof : true;
   }
 }
 function refresh(){ $('#next').disabled=!canContinue(); }
@@ -80,7 +82,12 @@ function selectionLine(){
   if(state.online||!state.concerns.length){ el.textContent=''; return; }
   const mins=state.concerns.reduce((t,c)=>t+(DURATION[c]||30),0);
   const fee=state.concerns.reduce((t,c)=>t+(FEES[c]||30),0);
-  el.textContent=state.concerns.join(' + ')+' · ~'+mins+' min · '+fee+' JOD';
+  const priced=state.concerns.filter(c=>!ON_EXAM.has(c)), exam=state.concerns.filter(c=>ON_EXAM.has(c));
+  const feeSum=priced.reduce((t,c)=>t+(FEES[c]||30),0);
+  let line=state.concerns.join(' + ')+' · ~'+mins+' min';
+  if(feeSum>0) line+=' · '+feeSum+' JOD';
+  if(exam.length) line+=' · '+exam.map(c=>EXAM_NOTE[c]||c+' quoted at examination').join(' · ');
+  el.textContent=line;
 }
 function renderConcerns(){
   const box=$('#concerns');box.innerHTML='';
@@ -157,9 +164,22 @@ function renderCalendar(){
   refresh();
 }
 // step 5
+function wireCliq(){
+  const amt=$('#cliqAmt'), box=$('#cliqBox'), note=$('#examPayNote');
+  if(amt) amt.textContent = state.fee>0 ? state.fee+' JOD' : '';
+  if(box) box.style.display = state.fee>0 ? '' : 'none';
+  if(note) note.hidden = !(state.concerns||[]).some(c=>ON_EXAM.has(c));
+  const inp=$('#payShot');
+  if(inp && !inp.__wired){ inp.__wired=true; inp.onchange=()=>{
+    const f=inp.files && inp.files[0]; if(!f) return;
+    state.payProof=true; $('#payShotLbl').textContent='Screenshot attached ✓';
+    const r=new FileReader(); r.onload=e=>{ const im=$('#payPrev'); im.src=e.target.result; im.hidden=false; }; r.readAsDataURL(f);
+    refresh();
+  };}
+}
 function renderSummary(){
   const doc=DOCS.find(d=>d.id===state.doc);
-  state.fee = state.online ? ONLINE_FEES[state.onlineLen] : (state.concerns.reduce((t,c)=>t+(FEES[c]||30),0)||30);
+  state.fee = state.online ? ONLINE_FEES[state.onlineLen] : (state.concerns.reduce((t,c)=>t+(ON_EXAM.has(c)?0:(FEES[c]||30)),0));
   const d=new Date(state.date);
   $('#sum').innerHTML = `
     <div class="row"><span>Service</span><span>${state.online?'Online · '+state.concern:(state.concerns.join(' + ')||state.concern)}</span></div>
@@ -168,16 +188,16 @@ function renderSummary(){
     <div class="row"><span>Time</span><span>${state.time}</span></div>
     <div class="row"><span>Duration</span><span>${state.duration} minutes</span></div>
     ${state.note?`<div class="row"><span>Your note</span><span style="max-width:28ch;text-align:right">${state.note.slice(0,120)}${state.note.length>120?'…':''}</span></div>`:''}
-    <div class="total"><span>${state.online?'Consultation fee':'Visit fee'}</span><span>${state.fee} JOD</span></div>
+    <div class="total"><span>${state.online?'Consultation fee':'Visit fee'}</span><span>${state.fee>0?state.fee+' JOD':'Quoted at the clinic'}</span></div>
     <div class="pay-note">${state.online?'Charged now. Your secure video link is sent on confirmation.':'Charged now and deducted from any treatment. Free cancellation up to 12 hours before.'}</div>`;
 }
-function pushToPortal(booking){try{const k='ora-admin-v1';const db=JSON.parse(localStorage.getItem(k))||{appts:[],reqs:[],blocks:[],txns:[]};db.appts.push(booking);db.txns=db.txns||[];db.txns.push({id:'t'+Date.now(),date:booking.date,who:booking.who,what:booking.what,amount:booking.fee||0,kind:'patient',status:'paid'});localStorage.setItem(k,JSON.stringify(db));}catch(e){}}
+function pushToPortal(booking){try{const k='ora-admin-v2';const db=JSON.parse(localStorage.getItem(k))||{appts:[],reqs:[],blocks:[],txns:[]};db.appts.push(booking);db.txns=db.txns||[];db.txns.push({id:'t'+Date.now(),date:booking.date,who:booking.who,what:booking.what+(booking.pay==='cliq'?' · CliQ proof attached':''),amount:booking.fee||0,kind:'patient',status:booking.fee>0?'pending':'paid'});localStorage.setItem(k,JSON.stringify(db));}catch(e){}}
 function confirmBooking(){
   const doc=DOCS.find(d=>d.id===state.doc);
   const name=$('#pname').value.trim(), email=$('#pemail').value.trim(), phone=$('#pphone').value.trim();
   if(!name||!(email||phone)){ toast('Add your name and one way to reach you.'); return; }
   const ref='ORA-'+hash(name+state.date+state.time).toString(36).toUpperCase().slice(0,6);
-  pushToPortal({id:'w'+ref, room:'c1', date:new Date(state.date).toISOString().slice(0,10), h:parseInt(state.time), who:name, what:(state.online?'Online · '+(state.concern||'Consultation'):(state.concerns.join(' + ')||'Consultation')), kind:'patient', status:'booked', fee:state.fee});
+  pushToPortal({id:'w'+ref, room:'c1', date:new Date(state.date).toISOString().slice(0,10), h:parseInt(state.time), who:name, what:(state.online?'Online · '+(state.concern||'Consultation'):(state.concerns.join(' + ')||'Consultation')), kind:'patient', status:'booked', fee:state.fee, pay:'cliq'});
   $('.flow-body').innerHTML = `
     <div class="confirm">
       <div class="tick"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F3EFE8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div>
@@ -186,7 +206,7 @@ function confirmBooking(){
       <div class="sheet" style="margin-top:28px">
         <div class="row"><span>Reference</span><span>${ref}</span></div>
         <div class="row"><span>${state.online?'Video link':'Address'}</span><span>${state.online?'Sent 15 minutes before your time':'Ora Clinic, Al-Gharbi St. 181, Madaba'}</span></div>
-        <div class="row"><span>Paid</span><span>${state.fee} JOD (simulated in this preview)</span></div>
+        <div class="row"><span>Payment</span><span>${state.fee>0 ? state.fee+' JOD · CliQ to Own99, Etihad Bank — being verified' : 'At the clinic, after examination'}</span></div>
       </div>
       <div class="actions-row">
         <a class="btn btn-primary" href="index.html">Back to Ora</a>
