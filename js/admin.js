@@ -107,8 +107,8 @@ function renderReqs(){
     const r=db.reqs.find(x=>x.id===b.dataset.ok); r.status='approved';
     for(let h=r.h1; h<r.h2; h++) db.appts.push({id:'p'+r.id+h, room:r.room, date:r.date, h, who:r.doc, what:r.caseT, kind:'partner', doc:r.doc, status:'booked'});
     const hrs=r.h2-r.h1, monthly=/Monthly/.test(r.model);
-    const amt = monthly ? 600 : Math.max(Math.round((parseInt(r.model.replace(/[^0-9]/g,''))||300)*0.40), 25);
-    db.txns.push({id:'ts'+r.id, date:r.date, who:r.doc, what:(monthly?'Monthly residency · ':'40% share · ')+r.caseT, amount:amt, kind:'partner', status:'pending'});
+    const amt = monthly ? 600 : Math.max(Math.round((parseInt(r.model.replace(/[^0-9]/g,''))||300)*0.60), 25);
+    db.txns.push({id:'ts'+r.id, date:r.date, who:r.doc, what:(monthly?'Monthly residency · ':'60% share · ')+r.caseT, amount:amt, kind:'partner', status:'pending'});
     save(db); render(); toast('Approved — session placed on the calendar.');
   });
   $$('[data-no]').forEach(b=>b.onclick=()=>{ const r=db.reqs.find(x=>x.id===b.dataset.no); r.status='declined'; save(db); render(); });

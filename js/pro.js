@@ -15,7 +15,7 @@ const ROOMS = {
         hours(d){ return [9,24]; },
         rate(h,d){ return (d.getDay()===5 || h>=19) ? 25 : 20; } }
 };
-const SHARE = 0.40, SHARE_MIN = 25;
+const SHARE = 0.60, SHARE_MIN = 25;
 const CASES = ['Restorative','Endodontics','Prosthodontics','Extraction / surgery','Orthodontics','Pediatric','Cosmetic / veneers','Other'];
 
 const state = { room:null, date:null, hours:[], model:null, caseType:null, caseFee:0, addons:{assist:false, scan:false} };
@@ -109,7 +109,7 @@ function renderCase(){
     $$('#caseTypes .pill').forEach(x=>x.classList.toggle('on',x===el)); update();
   });
   $('#payModels').innerHTML = `
-    <button class="opt" data-model="share" type="button"><b>Revenue share</b><span>The clinic takes 40% of case fees. Materials, machinery, sterilization, and reception included. Minimum 25 JOD.</span></button>
+    <button class="opt" data-model="share" type="button"><b>Revenue share</b><span>The clinic takes 60% of case fees. Materials, machinery, sterilization, and reception included. Minimum 25 JOD.</span></button>
     <button class="opt" data-model="monthly" type="button"><b>Hourly chair</b><span>Bring your own materials, keep 100% of your fees. 20 JOD/h daytime, 25 JOD/h evenings &amp; Fridays. Two-hour minimum.</span></button>`;
   $$('#payModels .opt').forEach(el=>el.onclick=()=>{
     state.model=el.dataset.model;
@@ -134,11 +134,11 @@ function estimate(){
   if(state.caseType) rows.push(['Case', state.caseType]);
   let total=0, note='';
   if(state.model==='share'){
-    rows.push(['Model','Revenue share · 40% to the clinic']);
+    rows.push(['Model','Revenue share · 60% to the clinic']);
     if(state.caseFee>0){
       const cut = Math.max(state.caseFee*SHARE, SHARE_MIN);
       rows.push(['Expected case fees', state.caseFee.toFixed(0)+' JOD']);
-      rows.push(['Clinic share (40%)', cut.toFixed(0)+' JOD']);
+      rows.push(['Clinic share (60%)', cut.toFixed(0)+' JOD']);
       rows.push(['You keep', (state.caseFee-cut).toFixed(0)+' JOD']);
       total = cut; note = 'Settled the same evening from the patient payment. Includes materials from our stock.';
     } else { total = SHARE_MIN; note='Enter expected case fees to see your split. 25 JOD minimum applies.'; }
@@ -167,7 +167,7 @@ function wireSubmit(){
   ['dName','dLic','dPhone','dSpec'].forEach(id=>$('#'+id).addEventListener('input',update));
   $('#agree').addEventListener('change',update);
   $('#submit').onclick = ()=>{
-    pushReqToPortal({id:'PR-'+Date.now().toString(36).toUpperCase(), room:state.room, date:state.date.toISOString().slice(0,10), h1:Math.min(...state.hours), h2:Math.max(...state.hours)+1, doc:$('#dName').value.trim(), caseT:state.caseType, model: state.model==='share' ? ('Share · 40% of ~'+(state.caseFee||300)+' JOD') : 'Monthly · 600 JOD', status:'pending'});
+    pushReqToPortal({id:'PR-'+Date.now().toString(36).toUpperCase(), room:state.room, date:state.date.toISOString().slice(0,10), h1:Math.min(...state.hours), h2:Math.max(...state.hours)+1, doc:$('#dName').value.trim(), caseT:state.caseType, model: state.model==='share' ? ('Share · 60% of ~'+(state.caseFee||300)+' JOD') : 'Monthly · 600 JOD', status:'pending'});
     const e = estimate(); if(!e) return;
     document.querySelector('.pro-flow').hidden = true;
     const done = $('#proDone'); done.hidden = false;
